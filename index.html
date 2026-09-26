@@ -254,7 +254,7 @@
   <div class="panel">
     <h2>Empire Survival · Chọn chế độ</h2>
     <button class="btn mode" data-mode="ai"><b>Đấu với AI</b><span>Xây làng, lên 5 đời, đánh bại quân Đỏ</span></button>
-    <button class="btn mode" data-mode="monster"><b>Sinh tồn: Quái vật</b><span>Quái kéo tới từng đợt, càng lâu và đời càng cao thì quái càng mạnh, có kỹ năng riêng. Phá hết 3 hang quái để thắng.</span></button>
+    <button class="btn mode" data-mode="monster"><b>Sinh tồn: Quái vật</b><span>Quái kéo tới từng đợt, càng về sau quái càng mạnh, có kỹ năng riêng. Phá hết 3 hang quái để thắng.</span></button>
     <button class="btn mode" data-mode="aimon"><b>Xem AI chống quái</b><span>Ngồi xem AI tự xây làng, lên đời và chống quái vật từng đợt</span></button>
     <button class="btn mode" data-mode="spec"><b>Xem 2 AI đấu</b><span>Ngồi xem Xanh và Đỏ tự đánh nhau</span></button>
     <button class="btn" id="modes-close">Đóng</button>
@@ -783,7 +783,7 @@ function applyTech(team, id){
   const who = team ? 'Đỏ' : 'Xanh';
   if (T.up){
     const nm = `Đời ${T.up} · ${AGE_NAME[T.up]}`;
-    if (S.spectate) toast(`${who} đã lên ${nm}!`); else if (team === 0) toast(`Đã lên ${nm}!` + (S.monster ? ' Quái vật cũng mạnh lên…' : '')); else toast(`Quân địch đã lên ${nm}`, true, true);
+    if (S.spectate) toast(`${who} đã lên ${nm}!`); else if (team === 0) toast(`Đã lên ${nm}!` + ''); else toast(`Quân địch đã lên ${nm}`, true, true);
     sfx('horn');
   } else if (team === 0 && !S.spectate){ toast('Nghiên cứu xong: ' + T.name); sfx('pop'); }
 }
@@ -841,7 +841,9 @@ const MPOOL = [ // type, cost, min player age, min wave
   ['wolf', 1, 1, 1], ['goblin', 1.5, 1, 1], ['skeleton', 1, 1, 2], ['spider', 2.5, 2, 3], ['bomber', 3, 2, 3], ['ogre', 6, 2, 3], ['bat', 2, 2, 4], ['shaman', 5, 2, 4],
   ['necro', 6, 3, 5], ['firefiend', 6, 3, 5], ['golem', 9, 3, 6], ['gargoyle', 8, 3, 7], ['dragon', 16, 4, 7], ['lich', 14, 4, 8] ];
 const canHit = (a, t) => !t || t.w || !UDEF[t.type].fly || a.w || !!UDEF[a.type].range;
-function mScale(){ return 1 + S.time/900 + (S.age[0] - 1)*.25; }
+// monsters grow with time only (a new tier every 6 minutes), not with the player's age
+function mTier(){ return Math.min(4, 1 + Math.floor(S.time/360)); }
+function mScale(){ return 1 + S.time/900 + (mTier() - 1)*.25; }
 function spawnMonster(type, x, y, target){
   const u = mkUnit(type, 1, clamp(x, 20, WW - 20), clamp(y, 40, WH - 20)), s = mScale();
   u.maxHp = u.hp = Math.round(UDEF[type].hp*s); u.mMul = 1 + (s - 1)*.6; u.mDef = Math.floor((s - 1)*1.5);
@@ -884,8 +886,8 @@ function monsterDirector(dt){
     l.gT = (l.gT === undefined ? 6 : l.gT) - dt;
     if (l.gT <= 0){
       l.gT = 26;
-      if (S.units.filter(u => u.lair === l).length < 3 + S.age[0]){
-        const pool = MPOOL.filter(p => p[2] <= S.age[0] && p[3] <= md.wave + 1), p = pool[Math.floor(Math.random()*pool.length)] || MPOOL[0];
+      if (S.units.filter(u => u.lair === l).length < 3 + mTier()){
+        const pool = MPOOL.filter(p => p[2] <= mTier() && p[3] <= md.wave + 1), p = pool[Math.floor(Math.random()*pool.length)] || MPOOL[0];
         const g = spawnMonster(p[0], l.x + (Math.random() - .5)*110, l.y + l.h/2 + 24 + Math.random()*40); g.lair = l; g.home = { x: g.x, y: g.y };
       }
     }
@@ -927,7 +929,7 @@ function monsterDirector(dt){
   }
   if (md.next > 0 || !pb.length) return;
   md.wave++; md.next = Math.max(42, 80 - md.wave*1.5);
-  const age = S.age[0], pool = MPOOL.filter(p => p[2] <= age && p[3] <= md.wave);
+  const age = mTier(), pool = MPOOL.filter(p => p[2] <= age && p[3] <= md.wave);
   let budget = 5 + md.wave*2.5 + (age - 1)*7;
   const list = [];
   while (budget > 0 && list.length < 70){ const p = pool[Math.floor(Math.random()*pool.length)]; list.push(p[0]); budget -= p[1]; }
