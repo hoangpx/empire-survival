@@ -145,7 +145,7 @@
   .cost{display:flex;gap:6px;font-weight:700;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
   .cost span{display:flex;align-items:center;gap:3px}
   .cost .ico{width:10px;height:10px}
-  #mini{width:156px;height:102px;border-radius:12px;display:block;cursor:pointer;flex:none;padding:3px}
+  #mini{width:132px;height:132px;border-radius:12px;display:block;cursor:pointer;flex:none;padding:3px}
   #tip{position:fixed;z-index:6;max-width:250px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:8px 11px;font-size:13px;line-height:1.38;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
   #tip b{font:800 15px 'Baloo 2',system-ui,sans-serif;display:block}
   #tip .td{color:var(--text);opacity:.9}
@@ -171,7 +171,7 @@
   @media (max-width:640px){
     .chip{font-size:15px;padding:3px 10px 3px 5px;gap:5px}
     .chip small{display:none}
-    #mini{width:104px;height:68px}
+    #mini{width:100px;height:100px}
     .sel-title{font-size:17px}
     .btn{padding:6px 8px;font-size:12px}
     .btn kbd{display:none}
@@ -268,7 +268,7 @@ const mini = document.getElementById('mini');
 const mctx = mini.getContext('2d');
 const $ = s => document.querySelector(s);
 
-const WW = 3200, WH = 3200, BGS = .5; // the ground picture is kept at half resolution
+const WW = 4000, WH = 4000, BGS = .5; // the ground picture is kept at half resolution
 // isometric view: world (x, y) on the ground -> view (X, Y); the world grid is turned 45° and squashed by half
 const ISK = Math.SQRT1_2, VIEW_W = (WW + WH)*ISK, VIEW_H = (WW + WH)*ISK*.5;
 const ISOX = (x, y) => (x - y + WH)*ISK, ISOY = (x, y) => (x + y)*ISK*.5;
@@ -277,33 +277,46 @@ const UNISO = (X, Y) => { const a = X/ISK - WH, b = Y/(ISK*.5); return { x: (a +
 const groundXf = g => g.transform(ISK, ISK*.5, -ISK, ISK*.5, WH*ISK, 0);
 const MIR = p => ({ x: WW - p.x, y: WH - p.y });
 // layout per mode: survival puts the village in the middle and a lair in every corner; the versus modes face off on the diagonal
-let PB = { x: 700, y: WH - 700 }, EB = MIR({ x: 700, y: WH - 700 }), LAIRS = [], ROADS = [];
-const FOG = { c: 40, w: Math.ceil(WW/40), h: Math.ceil(WH/40), vis: null, seen: null, cv: null, t: 0, on: false };
-function fogReset(on){ FOG.on = on; FOG.vis = new Uint8Array(FOG.w*FOG.h); FOG.seen = new Uint8Array(FOG.w*FOG.h); if (!FOG.cv){ FOG.cv = document.createElement('canvas'); FOG.cv.width = FOG.w; FOG.cv.height = FOG.h; } FOG.t = 0; }
+let PB = { x: 800, y: WH - 800 }, EB = MIR({ x: 800, y: WH - 800 }), LAIRS = [], ROADS = [];
+const FOG = { c: 40, w: Math.ceil(WW/40), h: Math.ceil(WH/40), n: 512, vis: null, seen: null, cv: null, ex: null, t: 0, on: false };
+function fogReset(on){
+  FOG.on = on; FOG.vis = new Uint8Array(FOG.w*FOG.h); FOG.seen = new Uint8Array(FOG.w*FOG.h); FOG.t = 0;
+  for (const k of ['cv', 'ex']){ if (!FOG[k]){ FOG[k] = document.createElement('canvas'); FOG[k].width = FOG[k].height = FOG.n; } }
+  FOG.ex.getContext('2d').clearRect(0, 0, FOG.n, FOG.n);
+  const g = FOG.cv.getContext('2d'); g.globalCompositeOperation = 'source-over'; g.fillStyle = 'rgb(8,11,18)'; g.fillRect(0, 0, FOG.n, FOG.n);
+}
 const fogAt = (x, y) => { const cx = Math.floor(x/FOG.c), cy = Math.floor(y/FOG.c); return cx < 0 || cy < 0 || cx >= FOG.w || cy >= FOG.h ? -1 : cy*FOG.w + cx; };
 const isVis = o => { if (!FOG.on) return true; const k = fogAt(o._wx ?? o.x, o._wy ?? o.y); return k >= 0 && FOG.vis[k] === 1; };
 const isSeen = o => { if (!FOG.on) return true; const k = fogAt(o._wx ?? o.x, o._wy ?? o.y); return k >= 0 && FOG.seen[k] === 1; };
+const sightOf = o => o.w ? (o.kind === 'tc' || o.kind === 'castle' ? 460 : o.kind === 'tower' ? 420 : o.kind === 'wall' ? 90 : 280)
+  : UDEF[o.type].range ? Math.max(320, UDEF[o.type].range + 120) : o.type === 'farmer' ? 250 : 290;
 function fogUpdate(){
   if (!FOG.on || !S) return;
+  const src = [];
+  for (const u of S.units) if (u.team === 0 && !u.dead) src.push([u.x, u.y, sightOf(u)]);
+  for (const b of S.buildings) if (b.team === 0 && !b.dead) src.push([b.x, b.y, sightOf(b)]);
+  // the logic grid (who is hidden, what has been discovered)
   FOG.vis.fill(0);
-  const c = FOG.c, mark = (x, y, r) => {
-    const x0 = Math.max(0, Math.floor((x - r)/c)), x1 = Math.min(FOG.w - 1, Math.floor((x + r)/c)), y0 = Math.max(0, Math.floor((y - r)/c)), y1 = Math.min(FOG.h - 1, Math.floor((y + r)/c));
-    for (let cy = y0; cy <= y1; cy++) for (let cx = x0; cx <= x1; cx++){ const px = (cx + .5)*c - x, py = (cy + .5)*c - y; if (px*px + py*py <= r*r){ const k = cy*FOG.w + cx; FOG.vis[k] = 1; FOG.seen[k] = 1; } }
-  };
-  for (const u of S.units) if (u.team === 0 && !u.dead) mark(u.x, u.y, UDEF[u.type].range ? Math.max(210, UDEF[u.type].range + 60) : 190);
-  for (const b of S.buildings) if (b.team === 0 && !b.dead) mark(b.x, b.y, b.kind === 'tc' || b.kind === 'castle' ? 340 : b.kind === 'tower' ? 300 : b.kind === 'wall' ? 70 : 190);
-  const g = FOG.cv.getContext('2d'), img = g.createImageData(FOG.w, FOG.h), p = img.data;
-  for (let k = 0; k < FOG.vis.length; k++){ const i = k*4; p[i] = 8; p[i + 1] = 11; p[i + 2] = 18; p[i + 3] = FOG.vis[k] ? 0 : FOG.seen[k] ? 150 : 255; }
-  g.putImageData(img, 0, 0);
+  const c = FOG.c;
+  for (const [x, y, R0] of src){ const r = R0*.82, x0 = Math.max(0, Math.floor((x - r)/c)), x1 = Math.min(FOG.w - 1, Math.floor((x + r)/c)), y0 = Math.max(0, Math.floor((y - r)/c)), y1 = Math.min(FOG.h - 1, Math.floor((y + r)/c));
+    for (let cy = y0; cy <= y1; cy++) for (let cx = x0; cx <= x1; cx++){ const px = (cx + .5)*c - x, py = (cy + .5)*c - y; if (px*px + py*py <= r*r){ const k = cy*FOG.w + cx; FOG.vis[k] = 1; FOG.seen[k] = 1; } } }
+  // the picture: soft-edged discs, blurred for free when the small canvas is stretched over the map
+  const k = FOG.n/WW, E = FOG.ex.getContext('2d'), F = FOG.cv.getContext('2d');
+  const disc = (g, x, y, r) => { const X = x*k, Y = y*k, Rr = r*k, gr = g.createRadialGradient(X, Y, Rr*.6, X, Y, Rr); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.beginPath(); g.arc(X, Y, Rr, 0, 7); g.fill(); };
+  for (const [x, y, r] of src) disc(E, x, y, r);
+  F.globalCompositeOperation = 'source-over'; F.globalAlpha = 1; F.fillStyle = 'rgb(8,11,18)'; F.fillRect(0, 0, FOG.n, FOG.n);
+  F.globalCompositeOperation = 'destination-out'; F.globalAlpha = .45; F.drawImage(FOG.ex, 0, 0); F.globalAlpha = 1;
+  for (const [x, y, r] of src) disc(F, x, y, r);
+  F.globalCompositeOperation = 'source-over';
 }
 function setLayout(mode){
   if (mode === 'monster'){
-    PB = { x: WW/2, y: WH/2 }; EB = { x: WW - 460, y: 460 };
-    LAIRS = [[460, 460], [WW - 460, 460], [460, WH - 460], [WW - 460, WH - 460]].map(([x, y]) => ({ x, y }));
+    PB = { x: WW/2, y: WH/2 }; EB = { x: WW - 560, y: 560 };
+    LAIRS = [[560, 560], [WW - 560, 560], [560, WH - 560], [WW - 560, WH - 560]].map(([x, y]) => ({ x, y }));
     ROADS = LAIRS.map(l => { const dx = l.x - PB.x, dy = l.y - PB.y; return [PB, { x: PB.x + dx*.3 + dy*.12, y: PB.y + dy*.3 - dx*.12 }, { x: PB.x + dx*.65 - dy*.1, y: PB.y + dy*.65 + dx*.1 }, { x: PB.x + dx*.86, y: PB.y + dy*.86 }]; });
   } else {
-    PB = { x: 700, y: WH - 700 }; EB = MIR(PB); LAIRS = [];
-    const c1 = { x: 1350, y: WH - 1050 }; ROADS = [[PB, c1, MIR(c1), EB]];
+    PB = { x: 800, y: WH - 800 }; EB = MIR(PB); LAIRS = [];
+    const c1 = { x: 1650, y: WH - 1300 }; ROADS = [[PB, c1, MIR(c1), EB]];
   }
 }
 const TEAM = {
@@ -473,12 +486,14 @@ function makeDeco(){
   for (let i = 0; i < 70*A; i++){ const p = at(), b = R() < .4;
     if (Math.hypot(p.wx - PB.x, p.wy - PB.y) < 330 || (!LAIRS.length && Math.hypot(p.wx - EB.x, p.wy - EB.y) < 330) || LAIRS.some(l => Math.hypot(p.wx - l.x, p.wy - l.y) < 260) || nearRoad(p.wx, p.wy, 36)) continue;
     out.push({ k: 3, x: p.x, y: p.y, b }); }
+  out.sort((a, b) => a.y - b.y);
   DECO = out;
 }
-function drawDeco(x0, x1, y0, y1){
+function drawDeco(x0, x1, y0, y1){ // only used while baking a tile
+  let lo = 0, hi = DECO.length; while (lo < hi){ const m = (lo + hi) >> 1; if (DECO[m].y < y0) lo = m + 1; else hi = m; }
   ctx.lineWidth = 1.3;
-  for (const d of DECO){
-    if (d.x < x0 || d.x > x1 || d.y < y0 || d.y > y1) continue;
+  for (let i = lo; i < DECO.length; i++){
+    const d = DECO[i]; if (d.y > y1) break; if (d.x < x0 || d.x > x1) continue;
     const x = d.x, y = d.y;
     if (d.k === 0){ ctx.strokeStyle = d.c; ctx.beginPath(); ctx.moveTo(x-2, y); ctx.lineTo(x-3, y-4); ctx.moveTo(x, y); ctx.lineTo(x, y-5.5); ctx.moveTo(x+2, y); ctx.lineTo(x+3, y-4); ctx.stroke(); }
     else if (d.k === 1){ ctx.fillStyle = d.c; for (let k = 0; k < 4; k++){ ctx.beginPath(); ctx.arc(x + Math.cos(k*1.57)*1.8, y + Math.sin(k*1.57)*1.8, 1.4, 0, 7); ctx.fill(); } ctx.fillStyle = '#f0b43c'; ctx.beginPath(); ctx.arc(x, y, 1, 0, 7); ctx.fill(); }
@@ -490,6 +505,31 @@ function drawDeco(x0, x1, y0, y1){
       if (d.b){ ctx.fillStyle = '#e8445a'; for (let k = 0; k < 3; k++){ ctx.beginPath(); ctx.arc(x - 5 + k*5, y - 5 + (k%2)*3, 1.4, 0, 7); ctx.fill(); } }
     }
   }
+}
+const TILE = 640, TILES = new Map(); let tileClock = 0;
+function groundTile(tx, ty, make){
+  const key = tx + ',' + ty, t = TILES.get(key);
+  if (t){ t.used = tileClock; return t.cv; }
+  if (!make) return null;
+  const c = document.createElement('canvas'); c.width = c.height = TILE; const g = c.getContext('2d');
+  g.translate(-tx*TILE, -ty*TILE); g.imageSmoothingEnabled = true;
+  g.drawImage(bg, 0, 0, VIEW_W, VIEW_H);
+  const saved = ctx; ctx = g; try { drawDeco(tx*TILE - 20, (tx + 1)*TILE + 20, ty*TILE - 4, (ty + 1)*TILE + 16); } finally { ctx = saved; }
+  TILES.set(key, { cv: c, used: tileClock });
+  return c;
+}
+function drawGround(vx0, vx1, vy0, vy1){
+  tileClock++;
+  const a = Math.max(0, Math.floor(vx0/TILE)), b = Math.min(Math.ceil(VIEW_W/TILE) - 1, Math.floor(vx1/TILE)), c0 = Math.max(0, Math.floor(vy0/TILE)), c1 = Math.min(Math.ceil(VIEW_H/TILE) - 1, Math.floor(vy1/TILE));
+  let made = 0;
+  for (let ty = c0; ty <= c1; ty++) for (let tx = a; tx <= b; tx++){
+    const had = TILES.has(tx + ',' + ty), t = groundTile(tx, ty, made < 2);
+    if (t && !had) made++;
+    if (t) ctx.drawImage(t, tx*TILE, ty*TILE, TILE + .6, TILE + .6);
+    else ctx.drawImage(bg, tx*TILE*BGS, ty*TILE*BGS, TILE*BGS, TILE*BGS, tx*TILE, ty*TILE, TILE + .6, TILE + .6);
+  }
+  const keep = Math.max(24, (b - a + 1)*(c1 - c0 + 1) + 8);
+  if (TILES.size > keep){ const old = [...TILES.entries()].sort((p, q) => p[1].used - q[1].used); for (let i = 0; i < TILES.size - keep; i++) TILES.delete(old[i][0]); }
 }
 function makeBg(){
   const c = document.createElement('canvas'); c.width = Math.ceil(WW*BGS); c.height = Math.ceil(WH*BGS);
@@ -537,7 +577,7 @@ function init(mode){
     md: { wave: 0, next: 180 }, kills: 0, graves: [],
   };
   setLayout(mode);
-  { const lk = mode === 'monster' ? 'm' : 'v'; if (BG_KEY !== lk){ BG_KEY = lk; bg = makeIsoBg(makeBg()); miniBg = makeMiniBg(); makeDeco(); } }
+  { const lk = mode === 'monster' ? 'm' : 'v'; if (BG_KEY !== lk){ BG_KEY = lk; const wb = makeBg(); bg = makeIsoBg(wb); miniBg = makeMiniBg(wb); makeDeco(); TILES.clear(); } }
   fogReset(!spect);
   const R = mulberry32(7);
   mkBuilding('tc', 0, PB.x, PB.y);
@@ -555,10 +595,10 @@ function init(mode){
   const homeRing = [['gold', -2.3, 300, 800], ['gold', .55, 330, 800], ['stone', 2.25, 340, 700], ['gold', -.95, 480, 700], ['stone', 1.35, 520, 700]];
   for (const [kind, a, d, amt] of homeRing) mine(kind, PB.x + Math.cos(a)*d, PB.y + Math.sin(a)*d, amt);
   if (S.monster){
-    for (const [kind, r, a] of [['gold', 860, .1], ['stone', 820, .95], ['iron', 1080, .45], ['lead', 1150, 1.2], ['gold', 1250, .75], ['iron', 900, 1.45]])
+    for (const [kind, r, a] of [['gold', 860, .1], ['stone', 820, .95], ['iron', 1300, .45], ['lead', 1450, 1.2], ['gold', 1400, .75], ['iron', 1050, 1.45], ['stone', 1600, .25], ['gold', 1750, 1.05]])
       for (let q = 0; q < 4; q++){ const ang = a + q*Math.PI/2; mine(kind, PB.x + Math.cos(ang)*r, PB.y + Math.sin(ang)*r, kind === 'gold' ? 800 : 700); }
   } else {
-    for (const [kind, x, y, amt] of [['gold', 1300, 2200, 800], ['iron', 1100, 1500, 600], ['lead', 1750, 2550, 600], ['stone', 900, 1900, 700], ['gold', 1550, 1750, 700], ['iron', 2050, 2350, 600], ['lead', 650, 1500, 600]]) mine(kind, x, y, amt);
+    for (const [kind, x, y, amt] of [['gold', 1620, 2750, 800], ['iron', 1380, 1880, 600], ['lead', 2180, 3190, 600], ['stone', 1120, 2380, 700], ['gold', 1940, 2190, 700], ['iron', 2560, 2940, 600], ['lead', 810, 1880, 600], ['gold', 900, 1300, 700]]) mine(kind, x, y, amt);
     for (const m of [...S.mines]){ const p = MIR(m); S.mines.push({ ...m, x: p.x, y: p.y, seed: R() }); }
   }
   const blocked = (x, y) =>
@@ -567,7 +607,7 @@ function init(mode){
     S.mines.some(m => Math.hypot(x-m.x, y-m.y) < 55) ||
     S.trees.some(t => Math.hypot(x-t.x, y-t.y) < 25) ||
     nearRoad(x, y, 40);
-  const forests = []; for (let i = 0; i < (S.monster ? 22 : 12); i++) forests.push([150 + R()*(WW - 300), 150 + R()*(WH - 300), 120 + R()*110, 12 + Math.floor(R()*18)]);
+  const forests = []; for (let i = 0; i < (S.monster ? 36 : 20); i++) forests.push([150 + R()*(WW - 300), 150 + R()*(WH - 300), 120 + R()*110, 12 + Math.floor(R()*18)]);
   for (const [cx, cy, rad, n] of forests){
     let placed = 0, tries = 0;
     while (placed < n && tries++ < 400){
@@ -578,7 +618,7 @@ function init(mode){
       placed++;
     }
   }
-  for (let i = 0; i < 70; i++){
+  for (let i = 0; i < 120; i++){
     const x = R()*WW, y = R()*WH; if (blocked(x, y)) continue;
     S.trees.push({ kind: 'tree', x, y, r: 11, amount: 60, max: 60, seed: R(), s: .9 + R()*.3, pine: R() < .3, shake: 0 });
   }
@@ -1114,7 +1154,7 @@ function findPath(sx, sy, tx, ty, reach, melee, bld){
   const h = i => { const dx = Math.abs(i % GW - gx), dy = Math.abs(((i/GW) | 0) - gy); return dx + dy - .5858*Math.min(dx, dy); };
   gStamp[s] = gGen; gCost[s] = 0; gFrom[s] = -1; push(h(s), s);
   let iter = 0, found = false, end = g; const r2 = reach ? reach*reach : 0;
-  while (heap.length && iter++ < 45000){
+  while (heap.length && iter++ < 70000){
     const cur = pop()[1];
     if (gClosed[cur] === gGen) continue; gClosed[cur] = gGen;
     const cx = cur % GW, cy = (cur/GW) | 0;
@@ -3119,10 +3159,9 @@ function render(){
   const z = cam.z*DPR;
   ctx.setTransform(z, 0, 0, z, -cam.x*z, -cam.y*z);
   ctx.imageSmoothingEnabled = true;
-  ctx.drawImage(bg, 0, 0, VIEW_W, VIEW_H);
   const vx0 = cam.x - 120, vx1 = cam.x + VW/cam.z + 120, vy0 = cam.y - 80, vy1 = cam.y + VH/cam.z + 220;
   const visV = (X, Y) => X > vx0 && X < vx1 && Y > vy0 && Y < vy1;
-  drawDeco(vx0, vx1, vy0, vy1);
+  drawGround(vx0, vx1, vy0, vy1);
   let vis = o => visV(ISOX(o.x, o.y), ISOY(o.x, o.y));
   // ground layer, in world coordinates through the iso transform
   ctx.save(); groundXf(ctx);
@@ -3242,27 +3281,25 @@ function render(){
   }
 }
 
-function makeMiniBg(){
-  const c = document.createElement('canvas'); c.width = 320; c.height = 160;
-  const g = c.getContext('2d'); g.drawImage(bg, 0, 0, c.width, c.height); return c;
+function makeMiniBg(src){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  c.getContext('2d').drawImage(src, 0, 0, 256, 256); return c;
 }
 const MINI = { s: 1, ox: 0, oy: 0 };
 function renderMini(){
-  const W = mini.width, H = mini.height, sc = Math.min(W/VIEW_W, H/VIEW_H), ox = (W - VIEW_W*sc)/2, oy = (H - VIEW_H*sc)/2;
-  MINI.s = sc; MINI.ox = ox; MINI.oy = oy;
-  const M = (x, y) => [ox + ISOX(x, y)*sc, oy + ISOY(x, y)*sc];
+  const W = mini.width, H = mini.height, sx = W/WW, sy = H/WH;
   mctx.setTransform(1, 0, 0, 1, 0, 0);
-  mctx.fillStyle = '#1f3319'; mctx.fillRect(0, 0, W, H);
-  mctx.drawImage(miniBg, ox, oy, VIEW_W*sc, VIEW_H*sc);
-  mctx.fillStyle = '#2f6e33'; for (const t of S.trees){ const [x, y] = M(t.x, t.y); mctx.fillRect(x - 1, y - 1, 2.2, 2.2); }
-  for (const m of S.mines){ const [x, y] = M(m.x, m.y); mctx.fillStyle = MINE_COL[m.kind]; mctx.beginPath(); mctx.arc(x, y, 2.6, 0, 7); mctx.fill(); }
-  mctx.fillStyle = '#c99a5f'; for (const f of S.farms){ const [x, y] = M(f.x, f.y); mctx.fillRect(x - 3, y - 2, 6, 4); }
-  for (const b of S.buildings){ if (b.dead || (b.team !== 0 && !isSeen(b))) continue; const [x, y] = M(b.x, b.y), r = Math.max(1.6, b.w*sc*.55); mctx.fillStyle = TEAM[b.team].main; mctx.strokeStyle = '#fff'; mctx.lineWidth = 1;
-    mctx.beginPath(); mctx.moveTo(x, y - r*.5); mctx.lineTo(x + r, y); mctx.lineTo(x, y + r*.5); mctx.lineTo(x - r, y); mctx.closePath(); mctx.fill(); if (b.w > 20) mctx.stroke(); }
-  if (FOG.on){ mctx.save(); mctx.setTransform(sc*ISK, sc*ISK*.5, -sc*ISK, sc*ISK*.5, ox + WH*ISK*sc, oy); mctx.imageSmoothingEnabled = true; mctx.drawImage(FOG.cv, 0, 0, WW, WH); mctx.restore(); }
-  for (const u of S.units){ if (u.team !== 0 && !isVis(u)) continue; const [x, y] = M(u.x, u.y); mctx.fillStyle = u.team ? (S.monster ? '#c68cff' : '#ff6b6d') : (u.sel ? '#ffffff' : '#7fb2ff'); mctx.fillRect(x - 1.5, y - 1.5, 3, 3); }
-  mctx.strokeStyle = 'rgba(255,255,255,.9)'; mctx.lineWidth = 1.5;
-  mctx.strokeRect(ox + cam.x*sc, oy + cam.y*sc, VW/cam.z*sc, VH/cam.z*sc);
+  mctx.drawImage(miniBg, 0, 0, W, H);
+  mctx.fillStyle = '#2f6e33'; for (const t of S.trees) mctx.fillRect(t.x*sx - 1, t.y*sy - 1, 2.2, 2.2);
+  for (const m of S.mines){ mctx.fillStyle = MINE_COL[m.kind]; mctx.beginPath(); mctx.arc(m.x*sx, m.y*sy, 2.4, 0, 7); mctx.fill(); }
+  mctx.fillStyle = '#c99a5f'; for (const f of S.farms) mctx.fillRect((f.x - f.w/2)*sx, (f.y - f.h/2)*sy, f.w*sx, f.h*sy);
+  for (const b of S.buildings){ if (b.dead || (b.team !== 0 && !isSeen(b))) continue; mctx.fillStyle = TEAM[b.team].main; mctx.strokeStyle = '#fff'; mctx.lineWidth = 1;
+    const w = Math.max(2, b.w*sx), h = Math.max(2, b.h*sy); mctx.fillRect(b.x*sx - w/2, b.y*sy - h/2, w, h); if (b.w > 20) mctx.strokeRect(b.x*sx - w/2, b.y*sy - h/2, w, h); }
+  if (FOG.on){ mctx.imageSmoothingEnabled = true; mctx.drawImage(FOG.cv, 0, 0, W, H); }
+  for (const u of S.units){ if (u.team !== 0 && !isVis(u)) continue; mctx.fillStyle = u.team ? (S.monster ? '#c68cff' : '#ff6b6d') : (u.sel ? '#ffffff' : '#7fb2ff'); mctx.fillRect(u.x*sx - 1.5, u.y*sy - 1.5, 3, 3); }
+  const cs = [[0, 0], [VW, 0], [VW, VH], [0, VH]].map(([x, y]) => toWorld(x, y));
+  mctx.strokeStyle = 'rgba(255,255,255,.9)'; mctx.lineWidth = 1.5; mctx.beginPath();
+  cs.forEach((p, i) => i ? mctx.lineTo(p.x*sx, p.y*sy) : mctx.moveTo(p.x*sx, p.y*sy)); mctx.closePath(); mctx.stroke();
 }
 
 /* ---------- camera ---------- */
@@ -3821,7 +3858,7 @@ window.addEventListener('blur', () => keys.clear());
 
 mini.addEventListener('pointerdown', e => {
   const r = mini.getBoundingClientRect();
-  const mv = ev => { const px = (ev.clientX - r.left)/r.width*mini.width, py = (ev.clientY - r.top)/r.height*mini.height, w = UNISO((px - MINI.ox)/MINI.s, (py - MINI.oy)/MINI.s); centerOn(w.x, w.y); };
+  const mv = ev => centerOn(clamp((ev.clientX - r.left)/r.width, 0, 1)*WW, clamp((ev.clientY - r.top)/r.height, 0, 1)*WH);
   mv(e); mini.setPointerCapture(e.pointerId);
   const move = ev => mv(ev), up = () => { mini.removeEventListener('pointermove', move); mini.removeEventListener('pointerup', up); };
   mini.addEventListener('pointermove', move); mini.addEventListener('pointerup', up);
