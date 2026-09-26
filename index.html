@@ -1615,7 +1615,7 @@ function updateDoctor(u, dt){
 }
 function updateSoldier(u, dt){
   u.working = false;
-  const d = UDEF[u.type], aggro = (S.ais[u.team] || UDEF[u.type].mon ? 165 : 140) + (d.range ? 40 : 0);
+  const d = UDEF[u.type], aggro = S.ais[u.team] || UDEF[u.type].mon ? 165 + (d.range ? 40 : 0) : Math.max(230, (d.range || 0) + 80);
   if ((S.ais[u.team] || UDEF[u.type].mon) && !UDEF[u.type].boss && !u.boss && aiTactics(u, dt)) return;
   if (u.state === 'move'){
     if (u.amove){ const e = nearestEnemy(u, aggro); if (e){ u.state = 'attack'; u.target = e; return; } }
@@ -3318,9 +3318,11 @@ function renderMini(){
     const w = Math.max(2, b.w*sx), h = Math.max(2, b.h*sy); mctx.fillRect(b.x*sx - w/2, b.y*sy - h/2, w, h); if (b.w > 20) mctx.strokeRect(b.x*sx - w/2, b.y*sy - h/2, w, h); }
   if (FOG.on){ mctx.imageSmoothingEnabled = true; mctx.drawImage(FOG.mcv, 0, 0, W, H); }
   for (const u of S.units){ if (u.team !== 0 && !isVis(u)) continue; mctx.fillStyle = u.team ? (S.monster ? '#c68cff' : '#ff6b6d') : (u.sel ? '#ffffff' : '#7fb2ff'); mctx.fillRect(u.x*sx - 1.5, u.y*sy - 1.5, 3, 3); }
-  const cs = [[0, 0], [VW, 0], [VW, VH], [0, VH]].map(([x, y]) => toWorld(x, y));
+  const cs = [[0, 0], [VW, 0], [VW, VH], [0, VH]].map(([x, y]) => toWorld(x, y)), cc = toWorld(VW/2, VH/2);
+  let area = 0; for (let i = 0; i < 4; i++){ const p = cs[i], q = cs[(i + 1) % 4]; area += p.x*q.y - q.x*p.y; }
+  const half = Math.sqrt(Math.abs(area)/2)/2*Math.SQRT2; // half-diagonal of a square with that area
   mctx.strokeStyle = 'rgba(255,255,255,.9)'; mctx.lineWidth = 1.5; mctx.beginPath();
-  cs.forEach((p, i) => i ? mctx.lineTo(p.x*sx, p.y*sy) : mctx.moveTo(p.x*sx, p.y*sy)); mctx.closePath(); mctx.stroke();
+  [[0, -half], [half, 0], [0, half], [-half, 0]].forEach(([dx, dy], i) => { const X = (cc.x + dx)*sx, Y = (cc.y + dy)*sy; i ? mctx.lineTo(X, Y) : mctx.moveTo(X, Y); }); mctx.closePath(); mctx.stroke();
 }
 
 /* ---------- camera ---------- */
