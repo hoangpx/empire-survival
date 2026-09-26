@@ -500,7 +500,7 @@ let DECO = [];
 function makeDeco(){
   const R = mulberry32(177), out = [], A = WW*WH/(2600*1700);
   const tuftCols = ['#6aa648', '#5e9a40', '#78b454', '#9ccf72'], flowerCols = ['#fff7e0', '#ffd84d', '#ff9fc2', '#c2b0ff'];
-  const at = () => { const wx = R()*WW, wy = R()*WH; return { wx, wy, x: ISOX(wx, wy), y: ISOY(wx, wy) }; };
+  const at = () => { const wx = 220 + R()*(WW - 440), wy = 220 + R()*(WH - 440); return { wx, wy, x: ISOX(wx, wy), y: ISOY(wx, wy) }; }; // nothing grows in the dark rim
   for (let i = 0; i < 4200*A; i++){ const p = at(); out.push({ k: 0, x: p.x, y: p.y, c: tuftCols[(R()*4)|0] }); }
   for (let i = 0; i < 260*A; i++){ const p = at(); out.push({ k: 1, x: p.x, y: p.y, c: flowerCols[(R()*4)|0] }); }
   for (let i = 0; i < 140*A; i++){ const p = at(); out.push({ k: 2, x: p.x, y: p.y, c: R() < .5 ? '#b9b6a8' : '#a4a193', rx: 2 + R()*3, ry: 1.5 + R()*1.5 }); }
@@ -577,9 +577,9 @@ function makeBg(){
     g.fillStyle = gr; g.beginPath(); g.arc(0, 0, 200, 0, 7); g.fill(); g.restore();
   }
   // soft edge
-  const e = 60;
+  const e = 260;
   for (const [x, y, w, h, x0, y0, x1, y1] of [[0,0,WW,e,0,0,0,e],[0,WH-e,WW,e,0,WH,0,WH-e],[0,0,e,WH,0,0,e,0],[WW-e,0,e,WH,WW,0,WW-e,0]]){
-    const gr = g.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, 'rgba(40,70,30,.45)'); gr.addColorStop(1, 'rgba(40,70,30,0)');
+    const gr = g.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, 'rgba(6,8,11,1)'); gr.addColorStop(.45, 'rgba(6,8,11,.55)'); gr.addColorStop(1, 'rgba(6,8,11,0)');
     g.fillStyle = gr; g.fillRect(x, y, w, h);
   }
   return c;
@@ -3176,7 +3176,7 @@ function hpBar(x, y, w, f, col){
 function render(){
   WALLS.clear(); for (const b of S.buildings) if (b.kind === 'wall' && !b.dead) WALLS.set(wallKey(b.team, b.x, b.y), b);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.fillStyle = '#2f4d25'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = FOG.on ? '#040507' : '#0b0f14'; ctx.fillRect(0, 0, cv.width, cv.height);
   const z = cam.z*DPR;
   ctx.setTransform(z, 0, 0, z, -cam.x*z, -cam.y*z);
   ctx.imageSmoothingEnabled = true;
@@ -3326,9 +3326,9 @@ function renderMini(){
 /* ---------- camera ---------- */
 // the camera lives in view space (cam.x/cam.y = top-left of the screen in projected coordinates)
 function clampCam(){
-  const vw = VW/cam.z, vh = VH/cam.z;
-  cam.x = vw >= VIEW_W + 200 ? (VIEW_W - vw)/2 : clamp(cam.x, -120, VIEW_W - vw + 120);
-  cam.y = vh >= VIEW_H + 240 ? (VIEW_H - vh)/2 : clamp(cam.y, -160, VIEW_H - vh + 160);
+  const vw = VW/cam.z, vh = VH/cam.z, m = 220, c = UNISO(cam.x + vw/2, cam.y + vh/2);
+  const x = clamp(c.x, m, WW - m), y = clamp(c.y, m, WH - m);
+  if (x !== c.x || y !== c.y){ cam.x = ISOX(x, y) - vw/2; cam.y = ISOY(x, y) - vh/2; }
 }
 function centerOn(x, y){ cam.x = ISOX(x, y) - VW/cam.z/2; cam.y = ISOY(x, y) - VH/cam.z/2; clampCam(); }
 const toView = (sx, sy) => ({ x: sx/cam.z + cam.x, y: sy/cam.z + cam.y });
