@@ -885,6 +885,7 @@ function spawnMonster(type, x, y, target){
   const u = mkUnit(type, 1, clamp(x, 20, WW - 20), clamp(y, 40, WH - 20)), s = mScale();
   u.maxHp = u.hp = Math.max(1, Math.round(UDEF[type].hp*s*.5));   // half the hp, twice as many per wave u.mMul = 1 + (s - 1)*.6; u.mDef = Math.floor((s - 1)*1.5);
   u.speed *= Math.min(1.35, 1 + (s - 1)*.08)*[1, .75, .88, 1, 1][mTier()];
+  if (S.md && S.md.inWave && S.md.wave >= 20){ u.maxHp = u.hp = Math.max(1, Math.round(u.maxHp*.6)); u.mMul *= .7; }   // late waves: many, but softer
   if (target){ u.state = 'attack'; u.target = target; u.wave = true; }
   puff(u.x, u.y - 8, 'poof', 5, '#7a4aa8');
   return u;
@@ -967,15 +968,16 @@ function monsterDirector(dt){
   if (md.next > 0 || !pb.length) return;
   md.wave++; md.next = Math.max(65, 105 - md.wave*1.5);
   const age = mTier(), pool = MPOOL.filter(p => p[2] <= age && p[3] <= md.wave);
-  let budget = (5 + md.wave*2.5 + (age - 1)*7)*2;
+  let budget = (5 + md.wave*2.5 + (age - 1)*7)*2*(md.wave >= 5 ? 2 : 1);   // twice as many again from wave 5
   const list = [];
-  while (budget > 0 && list.length < 140){ const p = pool[Math.floor(Math.random()*pool.length)]; list.push(p[0]); budget -= p[1]; }
+  while (budget > 0 && list.length < 200){ const p = pool[Math.floor(Math.random()*pool.length)]; list.push(p[0]); budget -= p[1]; }
   const W = mWeak(), prim = W[0].b;
   const dw = md.wave >= 3 ? W.find(w => dist(w.b, prim) > 320) : null, decoy = dw ? dw.b : null;
   md.decoy = decoy;
   const fast = t => t === 'wolf' || t === 'bat' || t === 'spider';
   const pm = S.units.filter(u => u.team === 0 && isMil(u));
   const prey = S.units.filter(u => u.team === 0 && u.type === 'farmer').map(f => ({ f, guard: pm.reduce((m, p) => Math.min(m, dist(p, f)), 9999) })).sort((a, c) => c.guard - a.guard);
+  md.inWave = true;
   const mainAt = spawnNear(prim), decoyAt = decoy ? spawnNear(decoy) : null, raidAt = prey.length ? spawnNear(prey[0].f) : null;
   let nRaid = 0, nDecoy = 0;
   for (const type of list){
@@ -990,6 +992,7 @@ function monsterDirector(dt){
       if (decoy){ u.state = 'idle'; u.hold = 16; u.goal = prim; u.wave = true; }
     }
   }
+  md.inWave = false;
   let boss = null;
   if (md.wave % 5 === 0){
     const BT = ['ogre', 'golem', 'dragon', 'demon', 'lich', 'gargoyle'], k = md.wave/5 - 1, ty = BT[k % BT.length];
