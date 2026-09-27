@@ -55,6 +55,9 @@
   @media (max-width:640px){ .top > .row:first-child{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:calc(100vw - 150px)} .top > .row:first-child::-webkit-scrollbar{display:none} .chip{flex:none} }
   .chip small{display:none!important}
   #fps-chip{position:fixed;right:16px;top:calc(56px + env(safe-area-inset-top,0px));z-index:2;pointer-events:none}
+  #spd-q{position:fixed;right:16px;top:calc(56px + env(safe-area-inset-top,0px));z-index:3;width:auto;min-width:44px;padding:0 10px;font:800 14px 'Baloo 2',system-ui,sans-serif}
+  body.watch #fps-chip{top:calc(104px + env(safe-area-inset-top,0px))}
+  @media (orientation:portrait) and (max-width:900px){ #spd-q{top:calc(96px + env(safe-area-inset-top,0px))} body.watch #fps-chip{top:calc(144px + env(safe-area-inset-top,0px))} }
   .chip.fps{padding:2px 9px;font-size:11.5px;font-family:'Nunito',system-ui,sans-serif;font-weight:800;color:#9cffb0}
   .chip.fps.mid{color:#ffd76a}
   .chip.fps.low{color:#ff8a86}
@@ -196,11 +199,12 @@
     <div class="chip" title="Vàng"><i class="ico gold"></i><span id="r-gold">0</span><small>vàng</small></div>
     <div class="chip" title="Đá"><i class="ico stone"></i><span id="r-stone">0</span><small>đá</small></div>
     <div class="chip" title="Sắt (Đời 3)"><i class="ico iron"></i><span id="r-iron">0</span><small>sắt</small></div>
-    <div class="chip" title="Chì (Đời 4)"><i class="ico lead"></i><span id="r-lead">0</span><small>chì</small></div>
+    <div class="chip" title="Chì" hidden><i class="ico lead"></i><span id="r-lead">0</span><small>chì</small></div>
     <div class="chip" title="Dân số"><i class="ico pop"></i><span id="r-pop">0/30</span></div>
   </div>
   <div class="row">
     <div class="chip fps" id="fps-chip" title="Khung hình mỗi giây · thời gian xử lý mỗi khung"><span id="r-fps">--</span></div>
+    <button class="icon-btn" id="spd-q" hidden aria-label="Tua nhanh" title="Tua nhanh">1×</button>
     <button class="icon-btn" id="gear-btn" aria-label="Cài đặt" aria-expanded="false" title="Cài đặt"><svg viewBox="0 0 24 24" class="si" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
   </div>
 </div>
@@ -239,8 +243,8 @@
     <dt>Đi và đánh</dt><dd>Chọn quân → nút “Đi và đánh” (phím A) → click nơi cần tới: quân đánh mọi kẻ địch gặp trên đường.</dd>
     <dt>Xây nhà</dt><dd>Chọn nông dân → chọn nhà (nhà dân, kho chứa, trại lính, trại cung, nhà thuốc) → click chỗ trống. Giữ Shift để đặt nhiều. Nhiều nông dân xây nhanh hơn.</dd>
     <dt>Quân</dt><dd>Lính kiếm máu trâu, giáp dày · Lính giáo đánh đau, máu mỏng · Cung thủ bắn xa · Bác sĩ (sinh ở nhà thuốc) tự đi chữa quân bị thương.</dd>
-    <dt>5 đời</dt><dd>Sơ Khai → Phong Kiến → Lâu Đài (máy bắn đá, nỏ, lâu đài, sắt) → Thuốc Súng (hỏa mai, đại bác, chì) → Công Nghiệp (súng trường, súng máy). Lên đời ở nhà chính.</dd>
-    <dt>Tài nguyên</dt><dd>Gỗ, lương thực, vàng, đá (xây lâu đài, lên đời), sắt (Đời 3), chì làm đạn (Đời 4).</dd>
+    <dt>5 đời</dt><dd>Sơ Khai → Phong Kiến → Lâu Đài (máy bắn đá, nỏ, lâu đài, sắt) → Thuốc Súng (hỏa mai, đại bác) → Công Nghiệp (súng trường, súng máy). Lên đời ở nhà chính.</dd>
+    <dt>Tài nguyên</dt><dd>Gỗ, lương thực, vàng, đá (xây lâu đài, lên đời), sắt (Đời 3, làm vũ khí và đạn).</dd>
         <dt>Quái vật</dt><dd>Quái xuất hiện khắp bản đồ, nhắm vào chỗ yếu, nghi binh kéo lính đi, cắn lén nông dân, rút con yếu về hồi máu. Có nhện độc, quỷ lửa nổ lan, vua xương hồi sinh, và quái bay (dơi, quỷ đá, rồng) chỉ cung, súng, nỏ, chòi canh bắn được.</dd>
     <dt>Tường gỗ</dt><dd>Chọn nông dân → Tường gỗ → kéo một đường (điện thoại: chạm điểm đầu rồi điểm cuối), chỉnh 2 đầu rồi bấm ✓. Tường chặn cả quân mình lẫn địch, chỉ quái bay qua được. Bấm vào đoạn tường đã xây → nút cổng: quân mình đi qua cổng, địch thì phải phá.</dd>
     <dt>Sửa nhà</dt><dd>Chọn nông dân, chuột phải vào nhà bị hỏng (tốn chút gỗ).</dd>
@@ -256,6 +260,7 @@
     <button class="btn mode" data-mode="ai"><b>Đấu với AI</b><span>Xây làng, lên 5 đời, đánh bại quân Đỏ</span></button>
     <button class="btn mode" data-mode="monster"><b>Sinh tồn: Quái vật</b><span>Quái kéo tới từng đợt, càng về sau quái càng mạnh, có kỹ năng riêng. Phá hết 3 hang quái để thắng.</span></button>
     <button class="btn mode" data-mode="aimon"><b>Xem AI chống quái</b><span>Ngồi xem AI tự xây làng, lên đời và chống quái vật từng đợt</span></button>
+    <button class="btn mode" data-mode="gallery"><b>Xem tất cả quân và quái</b><span>Mọi loại lính, quân địch, quái vật và boss đứng xếp hàng kèm tên</span></button>
     <button class="btn mode" data-mode="spec"><b>Xem 2 AI đấu</b><span>Ngồi xem Xanh và Đỏ tự đánh nhau</span></button>
     <button class="btn" id="modes-close">Đóng</button>
   </div>
@@ -354,9 +359,10 @@ const TEAM = {
   1: { main: '#e95a5c', dark: '#a8333a', light: '#ffaaa6' },
 };
 const COST = {
+  hypno: { food: 80, gold: 90 }, sapper: { food: 50, gold: 50 }, trap: { wood: 25 },
   farmer: { food: 50 }, soldier: { food: 60, gold: 20 }, spear: { food: 40, wood: 25 }, archer: { wood: 40, gold: 30 }, doctor: { food: 50, gold: 40 }, knight: { food: 80, gold: 60 },
   firearcher: { wood: 50, gold: 45 }, catapult: { wood: 180, gold: 100, stone: 40 }, ballista: { wood: 150, gold: 80, iron: 20 },
-  musket: { food: 60, gold: 45, lead: 15 }, cannon: { wood: 150, gold: 120, iron: 80, lead: 40 }, rifle: { food: 70, gold: 55, lead: 20 }, mg: { food: 90, gold: 90, iron: 30, lead: 40 },
+  musket: { food: 60, gold: 45, iron: 15 }, cannon: { wood: 150, gold: 120, iron: 120 }, rifle: { food: 70, gold: 55, iron: 20 }, mg: { food: 90, gold: 90, iron: 70 },
   farm: { wood: 60 }, house: { wood: 50 }, store: { wood: 100 }, wall: { wood: 4 }, barracks: { wood: 150 }, range: { wood: 150 }, stable: { wood: 150 }, smith: { wood: 150 },
   clinic: { wood: 120, gold: 40 }, tower: { wood: 90, gold: 40 }, workshop: { wood: 200, gold: 50 }, castle: { stone: 400, wood: 150 }, gunrange: { wood: 200, stone: 100, iron: 50 },
 };
@@ -366,6 +372,8 @@ const UDEF = {
   soldier: { name: 'Lính kiếm', mil: 1, hp: 50, def: 2, speed: 66, dmg: 7, cd: 1, tool: 'sword' },
   spear:   { name: 'Lính giáo', mil: 1, hp: 38, def: 0, speed: 68, dmg: 11, cd: 1.1, reach: 8, tool: 'spear', bonus: { knight: 10, ogre: 6, dragon: 6 } },
   archer:  { name: 'Cung thủ',  mil: 1, hp: 32, def: 0, speed: 64, dmg: 5, cd: 1.5, range: 135, tool: 'bow', shot: 'arrow', bonus: { spear: 2 }, age: 2 },
+  hypno:   { name: 'Pháp sư thôi miên', hp: 30, def: 0, speed: 60, dmg: 0, cd: 1, range: 150, tool: 'staff', age: 3 },
+  sapper:  { name: 'Lính cảm tử', mil: 1, hp: 40, def: 0, speed: 84, dmg: 1, cd: 1, tool: 'bomb', boom: 1, age: 4 },
   doctor:  { name: 'Bác sĩ',    hp: 28, def: 0, speed: 64, dmg: 0, cd: 1, heal: 6, tool: 'potion', age: 2 },
   knight:  { name: 'Kỵ binh',   mil: 1, hp: 70, def: 1, speed: 95, dmg: 8, cd: 1.2, r: 10, tool: 'sword', bonus: { archer: 4, firearcher: 4, musket: 3, goblin: 4 }, age: 2, hb: 54 },
   firearcher: { name: 'Cung thủ lửa', mil: 1, hp: 34, def: 0, speed: 64, dmg: 7, cd: 1.6, range: 145, tool: 'bow', shot: 'fire', bonus: { spear: 2 }, age: 3 },
@@ -395,34 +403,35 @@ const UDEF = {
 };
 const BDEF = {
   tc:       { name: 'Nhà chính', w: 88, h: 88, hp: 2400, wallH: 38, roofH: 38, wall: ['#f6e7ca', '#e3c99d'], beam: '#9a6a40', win: [-.34, .34], door: [20, 25], trains: ['farmer'], techs: ['wheel', 'plow', 'masonry', 'steam', 'age2', 'age3', 'age4', 'age5'], info: 'Chứa 10 dân · nơi nhận tài nguyên · tự bắn tên' },
-  barracks: { name: 'Trại lính', w: 56, h: 56, hp: 450, wallH: 30, roofH: 28, wall: ['#d6a878', '#b78955'], beam: '#7a4f2c', planks: true, win: [-.34, .34], door: [17, 21], time: 20, trains: ['soldier', 'spear'], techs: ['drill', 'march', 'condition'], info: 'Lính kiếm máu trâu, giáp dày · Lính giáo đánh đau, khắc kỵ binh' },
+  barracks: { name: 'Trại lính', w: 56, h: 56, hp: 450, wallH: 30, roofH: 28, wall: ['#d6a878', '#b78955'], beam: '#7a4f2c', planks: true, win: [-.34, .34], door: [17, 21], time: 20, trains: ['soldier', 'spear', 'sapper'], techs: ['drill', 'march', 'condition'], info: 'Lính kiếm máu trâu, giáp dày · Lính giáo đánh đau, khắc kỵ binh' },
   range:    { name: 'Trại cung', w: 58, h: 58, hp: 400, wallH: 30, roofH: 28, wall: ['#cfa274', '#a97c4c'], beam: '#6e4526', planks: true, win: [-.34, .34], door: [17, 21], time: 20, age: 2, trains: ['archer', 'firearcher'], techs: ['firearrow'], info: 'Cung thủ bắn từ xa · cung thủ lửa (Đời 3) đốt cháy nhà' },
   house:    { name: 'Nhà dân', w: 32, h: 32, hp: 220, wallH: 24, roofH: 26, wall: ['#f7e9d0', '#e6d0a8'], beam: '#9a6a40', win: [.26], door: [13, 16], time: 12, info: 'Thêm 10 chỗ ở cho dân' },
-  clinic:   { name: 'Nhà thuốc', w: 69, h: 42, hp: 320, wallH: 30, roofH: 28, wall: ['#ffffff', '#e6e9ec'], beam: '#b9a07a', win: [-.3, .3], door: [15, 19], time: 18, age: 2, trains: ['doctor'], techs: ['medic', 'surgery'], info: 'Bác sĩ tự tìm quân bị thương để chữa' },
+  clinic:   { name: 'Nhà thuốc', w: 69, h: 42, hp: 320, wallH: 30, roofH: 28, wall: ['#ffffff', '#e6e9ec'], beam: '#b9a07a', win: [-.3, .3], door: [15, 19], time: 18, age: 2, trains: ['doctor', 'hypno'], techs: ['medic', 'aoeheal', 'surgery'], info: 'Bác sĩ tự tìm quân bị thương để chữa' },
   store:    { name: 'Kho chứa', w: 43, h: 43, hp: 350, wallH: 28, roofH: 24, wall: ['#c99a6b', '#a8784a'], beam: '#6e4526', planks: true, win: [], door: [26, 20], time: 15, techs: ['loom', 'axe', 'pick', 'saw', 'deepmine'], info: 'Nơi nhận mọi tài nguyên · đặt gần rừng hoặc mỏ' },
   stable:   { name: 'Chuồng ngựa', w: 83, h: 45, hp: 450, wallH: 30, roofH: 26, wall: ['#c9955f', '#a5733f'], beam: '#6e4526', planks: true, win: [-.36], door: [30, 22], time: 22, age: 2, trains: ['knight'], techs: ['horseshoe'], info: 'Kỵ binh chạy nhanh, khắc chế cung thủ · sợ lính giáo' },
   smith:    { name: 'Lò rèn', w: 72, h: 43, hp: 420, wallH: 30, roofH: 26, wall: ['#bdb6aa', '#9a9387'], beam: '#6b5a48', win: [.3], door: [18, 20], time: 20, age: 2, techs: ['forge', 'mail', 'arrows', 'leather', 'steel', 'chain', 'plate'], info: 'Nâng cấp công và giáp cho quân' },
-  tower:    { name: 'Chòi canh', w: 29, h: 27, hp: 380, wallH: 62, roofH: 34, time: 20, age: 2, info: 'Tự bắn tên vào quân địch trong tầm' },
+  tower:    { name: 'Chòi canh', w: 29, h: 27, hp: 380, wallH: 62, roofH: 34, time: 20, age: 2, info: 'Tự bắn tên vào quân địch trong tầm', techs: ['volley2', 'volley3', 'guntower', 'cannontower'] },
   wall:     { name: 'Tường gỗ', w: 16, h: 16, hp: 160, wallH: 22, roofH: 4, time: 3, info: 'Chặn mọi quân đi bộ, cả quân mình (chỉ quái bay qua được). Bấm vào đoạn tường đã xây để làm cổng cho quân mình qua lại' },
   workshop: { name: 'Xưởng công thành', w: 86, h: 46, hp: 520, wallH: 32, roofH: 26, wall: ['#b88a5a', '#946a40'], beam: '#5e3c20', planks: true, win: [], door: [40, 26], time: 25, age: 3, trains: ['catapult', 'ballista', 'cannon'], techs: ['explosive', 'ironwheel'], info: 'Máy bắn đá phá nhà · máy bắn nỏ bắn tướng to · đại bác (Đời 4)' },
   castle:   { name: 'Lâu đài', w: 90, h: 67, hp: 2600, wallH: 60, roofH: 30, time: 45, age: 3, info: 'Pháo đài đá rất trâu, bắn 2 tên một lúc · +20 chỗ ở' },
   gunrange: { name: 'Trường súng', w: 80, h: 45, hp: 520, wallH: 30, roofH: 26, wall: ['#c4b6a0', '#a3957f'], beam: '#5a4a3a', win: [-.34, .34], door: [18, 21], time: 25, age: 4, trains: ['musket', 'rifle', 'mg'], techs: ['powder', 'rifling'], info: 'Lính hỏa mai (Đời 4) · súng trường, súng máy (Đời 5)' },
+  trap:     { name: 'Bẫy chông', w: 22, h: 22, hp: 100, info: 'Quái đi vào bị chông đâm mất máu, bẫy mòn dần rồi biến mất. Không chặn đường' },
   farm:     { name: 'Ruộng', w: 60, h: 42, info: 'Nông dân làm ruộng lấy lương thực · đặt ở đâu cũng được, nên gần nhà chính hoặc kho' },
   lair:     { name: 'Hang quái vật', w: 96, h: 64, hp: 3000, wallH: 44, roofH: 14, info: 'Nơi quái vật sinh ra · phá hết hang để chiến thắng' },
 };
-const BUILD_MENU = ['house', 'store', 'wall', 'barracks', 'range', 'stable', 'smith', 'clinic', 'tower', 'workshop', 'castle', 'gunrange'];
+const BUILD_MENU = ['house', 'store', 'wall', 'trap', 'barracks', 'range', 'stable', 'smith', 'clinic', 'tower', 'workshop', 'castle', 'gunrange'];
 const TECH = {
   age2:    { name: 'Lên Đời 2 · Phong Kiến', at: 'tc', up: 2, cost: { food: 400, gold: 150 }, time: 40, req: ['barracks', 'store'], desc: 'Mở khóa trại cung, chuồng ngựa, lò rèn, nhà thuốc, chòi canh. Cần có trại lính và kho chứa.' },
   age3:    { name: 'Lên Đời 3 · Lâu Đài', at: 'tc', up: 3, cost: { food: 700, gold: 300, stone: 200 }, time: 55, req: ['smith', 'range|stable'], desc: 'Mở khóa xưởng công thành, lâu đài, cung thủ lửa, mỏ sắt. Cần lò rèn và trại cung hoặc chuồng ngựa.' },
-  age4:    { name: 'Lên Đời 4 · Thuốc Súng', at: 'tc', up: 4, cost: { food: 1000, gold: 500, stone: 250, iron: 200 }, time: 70, req: ['workshop'], desc: 'Mở khóa trường súng, lính hỏa mai, đại bác, mỏ chì. Cần xưởng công thành.' },
-  age5:    { name: 'Lên Đời 5 · Công Nghiệp', at: 'tc', up: 5, cost: { food: 1500, gold: 800, iron: 400, lead: 300 }, time: 90, req: ['gunrange'], desc: 'Mở khóa lính súng trường, lính súng máy, máy hơi nước. Cần trường súng.' },
+  age4:    { name: 'Lên Đời 4 · Thuốc Súng', at: 'tc', up: 4, cost: { food: 1000, gold: 500, stone: 250, iron: 200 }, time: 70, req: ['workshop'], desc: 'Mở khóa trường súng, lính hỏa mai, đại bác. Cần xưởng công thành.' },
+  age5:    { name: 'Lên Đời 5 · Công Nghiệp', at: 'tc', up: 5, cost: { food: 1500, gold: 800, iron: 700 }, time: 90, req: ['gunrange'], desc: 'Mở khóa lính súng trường, lính súng máy, máy hơi nước. Cần trường súng.' },
   loom:    { name: 'Dệt vải', at: 'store', cost: { gold: 50 }, time: 15, desc: 'Nông dân +15 máu, +1 giáp: trụ lâu hơn khi bị đánh lén và đánh trả tốt hơn' },
   wheel:   { name: 'Xe cút kít', at: 'tc', cost: { food: 175, wood: 50 }, time: 25, age: 3, desc: 'Nông dân đi nhanh hơn 10%, mang thêm 5 tài nguyên mỗi chuyến' },
   plow:    { name: 'Cày ngựa', at: 'tc', cost: { food: 75, wood: 75 }, time: 20, age: 2, desc: 'Làm ruộng nhanh hơn 25%, ruộng mới +100 lương thực' },
   masonry: { name: 'Xây bằng đá', at: 'tc', cost: { stone: 200, wood: 100 }, time: 35, age: 3, desc: 'Tường gỗ thành tường đá (máu x3) · chòi canh +300 máu, +3 công, +25 tầm' },
   steam:   { name: 'Máy hơi nước', at: 'tc', cost: { food: 500, wood: 300, iron: 150 }, time: 50, age: 5, desc: 'Mọi việc khai thác nhanh hơn 30%' },
   axe:     { name: 'Rìu hai lưỡi', at: 'store', cost: { food: 100, wood: 50 }, time: 20, desc: 'Chặt gỗ nhanh hơn 25%' },
-  pick:    { name: 'Cuốc chim sắt', at: 'store', cost: { food: 100, wood: 75 }, time: 20, desc: 'Đào vàng, đá, sắt, chì nhanh hơn 25%' },
+  pick:    { name: 'Cuốc chim sắt', at: 'store', cost: { food: 100, wood: 75 }, time: 20, desc: 'Đào vàng, đá, sắt nhanh hơn 25%' },
   saw:     { name: 'Cưa hai người', at: 'store', cost: { food: 150, wood: 100 }, time: 30, age: 3, desc: 'Chặt gỗ nhanh thêm 25%' },
   deepmine:{ name: 'Khoan mỏ sâu', at: 'store', cost: { food: 150, wood: 120 }, time: 30, age: 3, desc: 'Đào mỏ nhanh thêm 25%' },
   forge:   { name: 'Rèn vũ khí', at: 'smith', cost: { food: 120, gold: 60 }, time: 25, desc: 'Lính kiếm, lính giáo, kỵ binh +2 công' },
@@ -438,13 +447,18 @@ const TECH = {
   horseshoe:{ name: 'Móng ngựa sắt', at: 'stable', cost: { food: 150, iron: 60 }, time: 30, age: 3, desc: 'Kỵ binh nhanh hơn 15%, +10 máu' },
   firearrow:{ name: 'Tên lửa', at: 'range', cost: { food: 200, wood: 150 }, time: 35, age: 3, desc: 'Cung thủ, chòi canh, lâu đài bắn tên lửa: +2 công, đốt cháy, rất mạnh vào nhà' },
   medic:   { name: 'Thảo dược', at: 'clinic', cost: { food: 80, gold: 60 }, time: 20, desc: 'Bác sĩ chữa nhanh hơn 50%' },
+  volley2: { name: 'Chòi bắn 2 tên', at: 'tower', cost: { wood: 100, gold: 60 }, time: 25, age: 2, desc: 'Mọi chòi canh bắn 2 mũi tên một lúc' },
+  volley3: { name: 'Chòi bắn 3 tên', at: 'tower', cost: { wood: 180, gold: 120 }, time: 35, age: 3, desc: 'Mọi chòi canh bắn 3 mũi tên một lúc' },
+  guntower: { name: 'Chòi súng', at: 'tower', cost: { gold: 200, iron: 40 }, time: 40, age: 4, desc: 'Chòi canh đổi sang bắn súng: +8 công, bắn xa thêm 30' },
+  cannontower: { name: 'Chòi đại bác', at: 'tower', cost: { gold: 300, iron: 160 }, time: 50, age: 5, desc: 'Chòi canh bắn đại bác nổ lan: +16 công, nổ trúng cả vùng' },
+  aoeheal: { name: 'Hồi máu cả vùng', at: 'clinic', cost: { food: 200, gold: 150 }, time: 30, age: 3, desc: 'Bác sĩ chữa người này thì người đứng gần cũng được hồi máu' },
   surgery: { name: 'Phẫu thuật', at: 'clinic', cost: { food: 250, gold: 200 }, time: 40, age: 4, desc: 'Bác sĩ chữa nhanh thêm 50%' },
-  explosive:{ name: 'Thuốc nổ', at: 'workshop', cost: { gold: 250, lead: 60 }, time: 40, age: 4, desc: 'Máy công thành +30% sát thương' },
+  explosive:{ name: 'Thuốc nổ', at: 'workshop', cost: { gold: 250, iron: 60 }, time: 40, age: 4, desc: 'Máy công thành +30% sát thương' },
   ironwheel:{ name: 'Bánh xe sắt', at: 'workshop', cost: { wood: 200, iron: 80 }, time: 35, age: 4, desc: 'Máy công thành đi nhanh hơn 25%' },
-  powder:  { name: 'Thuốc súng mịn', at: 'gunrange', cost: { gold: 250, lead: 80 }, time: 40, age: 4, desc: 'Lính súng +3 công' },
-  rifling: { name: 'Nòng xoắn', at: 'gunrange', cost: { gold: 350, iron: 100, lead: 120 }, time: 50, age: 5, desc: 'Lính súng +2 công, +20 tầm bắn' },
+  powder:  { name: 'Thuốc súng mịn', at: 'gunrange', cost: { gold: 250, iron: 80 }, time: 40, age: 4, desc: 'Lính súng +3 công' },
+  rifling: { name: 'Nòng xoắn', at: 'gunrange', cost: { gold: 350, iron: 220 }, time: 50, age: 5, desc: 'Lính súng +2 công, +20 tầm bắn' },
 };
-const SHOOT = { tower: { range: 175, dmg: 5, cd: 1.6 }, tc: { range: 170, dmg: 6, cd: 1.8, n: 2 }, castle: { range: 230, dmg: 8, cd: .8, n: 2 } };
+const SHOOT = { tower: { range: 175, dmg: 7, cd: 1.4 }, tc: { range: 170, dmg: 6, cd: 1.8, n: 2 }, castle: { range: 230, dmg: 8, cd: .8, n: 2 } };
 const MELEE = t => t === 'soldier' || t === 'spear' || t === 'knight';
 const ARCH = t => t === 'archer' || t === 'firearcher';
 const GUN = t => !!(UDEF[t] && UDEF[t].gun);
@@ -452,9 +466,9 @@ const SIEGE = t => !!(UDEF[t] && UDEF[t].siege);
 const INF = t => t === 'soldier' || t === 'spear' || ARCH(t) || GUN(t);
 const NOUP = new Set();
 const isUnitQ = q => !q.startsWith('tech:');
-const qTime = q => q.startsWith('tech:') ? TECH[q.slice(5)].time : TRAIN_T[q];
+const qTime = q => q.startsWith('tech:') ? TECH[q.slice(5)].time : TRAIN_T[q]*.8;   // training 20% faster
 const HEAL_R = 170, HEAL_RATE = 5;
-const TRAIN_T = { farmer: 6, soldier: 8, spear: 7, archer: 8, doctor: 9, knight: 10, firearcher: 9, catapult: 16, ballista: 13, musket: 10, cannon: 18, rifle: 10, mg: 12 };
+const TRAIN_T = { hypno: 12, sapper: 8, farmer: 6, soldier: 8, spear: 7, archer: 8, doctor: 9, knight: 10, firearcher: 9, catapult: 16, ballista: 13, musket: 10, cannon: 18, rifle: 10, mg: 12 };
 const CAP = 10, POP_MAX = 120, SW = 0.45;
 const WORK_T = { tree: 0.75, gold: 0.95, stone: 1.0, iron: 1.1, lead: 1.15, farm: 0.8, build: 0.6 };
 const MINE_AGE = { gold: 1, stone: 1, iron: 3, lead: 4 };
@@ -595,7 +609,7 @@ function makeBg(){
 
 function init(mode){
   mode = mode || 'ai';
-  const mon = mode === 'monster' || mode === 'aimon';
+  const mon = mode === 'monster' || mode === 'aimon' || mode === 'gallery';
   Object.assign(TEAM[1], mon ? { main: '#9b59d0', dark: '#5e2f86', light: '#d3b0f0' } : { main: '#e95a5c', dark: '#a8333a', light: '#ffaaa6' });
   const spect = mode === 'spec' || mode === 'aimon';
   S = {
@@ -604,12 +618,12 @@ function init(mode){
     units: [], buildings: [], trees: [], mines: [], farms: [], stumps: [],
     particles: [], floats: [], markers: [], rubble: [], arrows: [], rings: [],
     sel: [], selB: null, time: 0, over: null, nextId: 1, sig: '', warnedPop: false, age: { 0: 1, 1: 1 }, up: { 0: new Set(), 1: new Set() }, place: null,
-    md: { wave: 0, next: 180 }, kills: 0, graves: [],
+    md: { wave: 0, next: 210 }, kills: 0, graves: [], traps: [],
   };
   setLayout(mon ? 'monster' : mode);
   { const lk = mon ? 'm' : 'v'; if (BG_KEY !== lk){ BG_KEY = lk; const wb = makeBg(); bg = makeIsoBg(wb); miniBg = makeMiniBg(wb); makeDeco(); TILES.clear(); } }
   fogReset(!spect);
-  const R = mulberry32(7);
+  const R = mulberry32((Math.random()*2147483647) | 0);
   mkBuilding('tc', 0, PB.x, PB.y);
   mkBuilding('barracks', 0, PB.x + 240, PB.y + 130);
   mkBuilding('house', 0, PB.x - 190, PB.y + 150);
@@ -621,14 +635,15 @@ function init(mode){
   }
   aiInit();
   // mines: a ring around every home, more further out (fourfold around the middle in survival, mirrored in versus)
-  const mine = (kind, x, y, amt) => S.mines.push({ kind, x: clamp(x, 90, WW - 90), y: clamp(y, 110, WH - 90), r: 20, amount: amt, max: amt, seed: R() });
+  const mine = (kind, x, y, amt) => S.mines.push({ kind, x: clamp(x, 90, WW - 90), y: clamp(y, 110, WH - 90), r: 20, amount: amt*2, max: amt*2, seed: R() });
   const homeRing = [['gold', -2.3, 300, 800], ['gold', .55, 330, 800], ['stone', 2.25, 340, 700], ['gold', -.95, 480, 700], ['stone', 1.35, 520, 700]];
-  for (const [kind, a, d, amt] of homeRing) mine(kind, PB.x + Math.cos(a)*d, PB.y + Math.sin(a)*d, amt);
+  const spin = S.monster ? R()*Math.PI*2 : 0, jit = v => S.monster ? v*(.9 + R()*.2) : v;
+  for (const [kind, a, d, amt] of homeRing){ const aa = a + spin + (S.monster ? (R() - .5)*.5 : 0); mine(kind, PB.x + Math.cos(aa)*jit(d), PB.y + Math.sin(aa)*jit(d), amt); }
   if (S.monster){
-    for (const [kind, r, a] of [['gold', 860, .1], ['stone', 820, .95], ['iron', 1300, .45], ['lead', 1450, 1.2], ['gold', 1400, .75], ['iron', 1050, 1.45], ['stone', 1600, .25], ['gold', 1750, 1.05]])
-      for (let q = 0; q < 4; q++){ const ang = a + q*Math.PI/2; mine(kind, PB.x + Math.cos(ang)*r, PB.y + Math.sin(ang)*r, kind === 'gold' ? 800 : 700); }
+    for (const [kind, r, a] of [['gold', 860, .1], ['stone', 820, .95], ['iron', 1300, .45], ['iron', 1450, 1.2], ['gold', 1400, .75], ['iron', 1050, 1.45], ['stone', 1600, .25], ['gold', 1750, 1.05]])
+      for (let q = 0; q < 4; q++){ const ang = a + spin + q*Math.PI/2 + (R() - .5)*.4, rr = jit(r), p = { x: PB.x + Math.cos(ang)*rr, y: PB.y + Math.sin(ang)*rr }; if (LAIRS.some(l => Math.hypot(l.x - p.x, l.y - p.y) < 300)) continue; mine(kind, p.x, p.y, kind === 'gold' ? 800 : 700); }
   } else {
-    for (const [kind, x, y, amt] of [['gold', 1620, 2750, 800], ['iron', 1380, 1880, 600], ['lead', 2180, 3190, 600], ['stone', 1120, 2380, 700], ['gold', 1940, 2190, 700], ['iron', 2560, 2940, 600], ['lead', 810, 1880, 600], ['gold', 900, 1300, 700]]) mine(kind, x, y, amt);
+    for (const [kind, x, y, amt] of [['gold', 1620, 2750, 800], ['iron', 1380, 1880, 600], ['stone', 1120, 2380, 700], ['gold', 1940, 2190, 700], ['iron', 2560, 2940, 600], ['gold', 900, 1300, 700]]) mine(kind, x, y, amt);
     for (const m of [...S.mines]){ const p = MIR(m); S.mines.push({ ...m, x: p.x, y: p.y, seed: R() }); }
   }
   const blocked = (x, y) =>
@@ -644,13 +659,13 @@ function init(mode){
       const a = R()*Math.PI*2, d = Math.sqrt(R())*rad;
       const x = cx + Math.cos(a)*d, y = cy + Math.sin(a)*d*0.8;
       if (blocked(x, y)) continue;
-      S.trees.push({ kind: 'tree', x, y, r: 11, amount: 60, max: 60, seed: R(), s: .9 + R()*.3, pine: R() < .3, shake: 0 });
+      S.trees.push({ kind: 'tree', x, y, r: 11, amount: 180, max: 180, seed: R(), s: .9 + R()*.3, pine: R() < .3, shake: 0 });
       placed++;
     }
   }
   for (let i = 0; i < 120; i++){
     const x = R()*WW, y = R()*WH; if (blocked(x, y)) continue;
-    S.trees.push({ kind: 'tree', x, y, r: 11, amount: 60, max: 60, seed: R(), s: .9 + R()*.3, pine: R() < .3, shake: 0 });
+    S.trees.push({ kind: 'tree', x, y, r: 11, amount: 180, max: 180, seed: R(), s: .9 + R()*.3, pine: R() < .3, shake: 0 });
   }
   if (!S.monster) S.trees = S.trees.filter(t => t.x < WW/2).flatMap(t => {
     const m = MIR(t);
@@ -681,7 +696,28 @@ function init(mode){
   centerOn(PB.x + 60, PB.y + 40);
   $('#over').hidden = true; $('#modes').hidden = true;
   setSel([]); S.selB = null;
-  if (S.monster) toast('Sinh tồn: quái vật tấn công sau 3:00 · phá hết 4 hang quái ở 4 góc bản đồ để thắng');
+  if (mode === 'gallery'){ galleryLineup(); return; }
+  if (S.monster) toast('Sinh tồn: quái vật tấn công sau 3:30 · phá hết 4 hang quái ở 4 góc bản đồ để thắng');
+}
+// rows: our army, the enemy army, monsters, bosses - laid out left to right on screen
+function galleryLineup(){
+  S.gallery = true; S.units = []; S.buildings = []; S.farms = []; S.traps = []; S.over = null;
+  Object.assign(TEAM[1], { main: '#e95a5c', dark: '#a8333a', light: '#ffaaa6' });
+  FOG.on = false; gridDirty = true;
+  const cx = PB.x, cy = PB.y;
+  S.trees = S.trees.filter(t => Math.hypot(t.x - cx, t.y - cy) > 900); S.mines = S.mines.filter(m => Math.hypot(m.x - cx, m.y - cy) > 900);
+  const human = Object.keys(UDEF).filter(k => !UDEF[k].mon), mons = Object.keys(UDEF).filter(k => UDEF[k].mon && !UDEF[k].boss);
+  const place = (list, row, step, team, fn) => list.forEach((t, j) => {
+    const c = j - (list.length - 1)/2, x = cx + c*step/2 + row*80, y = cy - c*step/2 + row*80;
+    const u = mkUnit(t, team, x, y); u.face = 1; u.state = 'idle'; u.gl = UDEF[t].name; if (fn) fn(u);
+  });
+  place(human, -3.4, 104, 0);
+  place(human, -1.6, 104, 1);
+  place(mons, .6, 128, 1);
+  const bosses = [['ogre', 'Vua quỷ khổng lồ'], ['golem', 'Vua người đá'], ['dragon', 'Vua rồng lửa'], ['demon', 'Chúa Quỷ'], ['lich', 'Vua vua xương'], ['gargoyle', 'Vua quỷ đá bay'], ['guardian', 'Chúa Hang']];
+  place(bosses.map(b => b[0]), 3.4, 200, 1, u => { const b = bosses.find(q => q[0] === u.type); u.gl = b[1]; if (u.type !== 'guardian' && u.type !== 'demon'){ u.boss = true; u.bossScale = 1.7; u.r = Math.round((UDEF[u.type].r || 8)*1.7); } });
+  cam.z = VW < 640 ? .7 : .95; centerOn(cx, cy);
+  toast('Tất cả quân và quái · hàng trên: quân mình, quân địch · dưới: quái vật và boss');
 }
 function mkBuilding(kind, team, x, y){
   const d = BDEF[kind];
@@ -752,13 +788,14 @@ function hpOf(type, team){
   if (d.mil && !d.mon){ if (up.has('drill')) h *= 1.15; if (up.has('condition')) h *= 1.15; }
   return Math.round(h);
 }
-function bHpOf(kind, team){ const up = S.up[team] || NOUP; return BDEF[kind].hp*(kind === 'wall' && up.has('masonry') ? 3 : 1) + (kind === 'tower' && up.has('masonry') ? 300 : 0); }
+function bHpOf(kind, team){ const up = S.up[team] || NOUP, am = kind === 'lair' ? 1 : 1 + .3*(((S.age && S.age[team]) || 1) - 1); return Math.round((BDEF[kind].hp*(kind === 'wall' && up.has('masonry') ? 3 : 1) + (kind === 'tower' && up.has('masonry') ? 300 : 0))*am); }
 function speedOf(u){
   const up = S.up[u.team] || NOUP, t = u.type; let s = u.speed;
   if (INF(t) && up.has('march')) s *= 1.12;
   if (t === 'knight' && up.has('horseshoe')) s *= 1.15;
   if (SIEGE(t) && up.has('ironwheel')) s *= 1.25;
   if (t === 'farmer' && up.has('wheel')) s *= 1.1;
+  if (!UDEF[t].mon) s *= 1.2;   // villagers and every army unit move 20% faster (monsters unchanged)
   return s;
 }
 const capOf = u => CAP + ((S.up[u.team] || NOUP).has('wheel') ? 5 : 0);
@@ -777,7 +814,7 @@ function techOk(team, id){
 function applyTech(team, id){
   const T = TECH[id];
   S.up[team].add(id);
-  if (T.up) S.age[team] = T.up;
+  if (T.up){ S.age[team] = T.up; for (const b of S.buildings){ if (b.team !== team || b.dead || b.kind === 'lair') continue; const m = bHpOf(b.kind, team); if (m > b.maxHp){ b.hp += m - b.maxHp; b.maxHp = m; } } }
   if (['loom', 'drill', 'condition', 'horseshoe'].includes(id)) for (const u of S.units){ if (u.team !== team || UDEF[u.type].mon) continue; const m = hpOf(u.type, team); if (m > u.maxHp){ u.hp += m - u.maxHp; u.maxHp = m; } }
   if (id === 'masonry') for (const b of S.buildings){ if (b.team !== team || b.dead || (b.kind !== 'wall' && b.kind !== 'tower')) continue; const m = bHpOf(b.kind, team); b.hp += m - b.maxHp; b.maxHp = m; }
   const who = team ? 'Đỏ' : 'Xanh';
@@ -846,8 +883,8 @@ function mTier(){ return Math.min(4, 1 + Math.floor(S.time/360)); }
 function mScale(){ return 1 + S.time/900 + (mTier() - 1)*.25; }
 function spawnMonster(type, x, y, target){
   const u = mkUnit(type, 1, clamp(x, 20, WW - 20), clamp(y, 40, WH - 20)), s = mScale();
-  u.maxHp = u.hp = Math.round(UDEF[type].hp*s); u.mMul = 1 + (s - 1)*.6; u.mDef = Math.floor((s - 1)*1.5);
-  u.speed *= Math.min(1.35, 1 + (s - 1)*.08);
+  u.maxHp = u.hp = Math.max(1, Math.round(UDEF[type].hp*s*.5));   // half the hp, twice as many per wave u.mMul = 1 + (s - 1)*.6; u.mDef = Math.floor((s - 1)*1.5);
+  u.speed *= Math.min(1.35, 1 + (s - 1)*.08)*[1, .75, .88, 1, 1][mTier()];
   if (target){ u.state = 'attack'; u.target = target; u.wave = true; }
   puff(u.x, u.y - 8, 'poof', 5, '#7a4aa8');
   return u;
@@ -928,11 +965,11 @@ function monsterDirector(dt){
     }
   }
   if (md.next > 0 || !pb.length) return;
-  md.wave++; md.next = Math.max(42, 80 - md.wave*1.5);
+  md.wave++; md.next = Math.max(65, 105 - md.wave*1.5);
   const age = mTier(), pool = MPOOL.filter(p => p[2] <= age && p[3] <= md.wave);
-  let budget = 5 + md.wave*2.5 + (age - 1)*7;
+  let budget = (5 + md.wave*2.5 + (age - 1)*7)*2;
   const list = [];
-  while (budget > 0 && list.length < 70){ const p = pool[Math.floor(Math.random()*pool.length)]; list.push(p[0]); budget -= p[1]; }
+  while (budget > 0 && list.length < 140){ const p = pool[Math.floor(Math.random()*pool.length)]; list.push(p[0]); budget -= p[1]; }
   const W = mWeak(), prim = W[0].b;
   const dw = md.wave >= 3 ? W.find(w => dist(w.b, prim) > 320) : null, decoy = dw ? dw.b : null;
   md.decoy = decoy;
@@ -959,7 +996,7 @@ function monsterDirector(dt){
     boss = spawnMonster(ty, mainAt.x, mainAt.y, prim);
     const m = 1 + md.wave/20;
     boss.boss = true; boss.bname = ty === 'demon' ? 'Chúa Quỷ' : 'Vua ' + UDEF[ty].name.toLowerCase();
-    boss.maxHp = boss.hp = Math.round(boss.maxHp*(ty === 'demon' ? 2.5 : 9)*m); boss.mMul = (boss.mMul || 1)*2.2; boss.mDef = (boss.mDef || 0) + 4;
+    boss.maxHp = boss.hp = Math.round(400*md.wave/5); boss.mMul = (boss.mMul || 1)*1.2; boss.mDef = (boss.mDef || 0) + 1; boss.noHeal = md.wave === 5;   // 500 hp on wave 5, +500 per boss after; the first one cannot be healed
     boss.bossScale = ty === 'demon' ? 1.25 : 1.7; boss.r = Math.round((UDEF[ty].r || 8)*boss.bossScale);
   }
   toast(`Đợt ${md.wave}: ${list.length + (boss ? 1 : 0)} quái vật!` + (boss ? ' BOSS ' + boss.bname.toUpperCase() + ' xuất hiện!' : ''), true, true); sfx('horn');
@@ -970,7 +1007,7 @@ function monsterSkills(u, dt){
   if (d.skill === 'explode'){
     const t = u.target;
     if (u.state === 'attack' && t && !t.dead && inRange(u, t, 6)){
-      splashDamage(u.x, u.y, 70, atkOf(u), u, 2); ring(u.x, u.y, 70, '#ff9a3c');
+      splashDamage(u.x, u.y, 70, 20, u, 2.5); ring(u.x, u.y, 70, '#ff9a3c');
       puff(u.x, u.y - 8, 'poof', 14, '#ff9a3c'); puff(u.x, u.y - 8, 'poof', 8, '#3a3440'); sfx('boom', u.x, u.y);
       kill(u);
     }
@@ -985,7 +1022,7 @@ function monsterSkills(u, dt){
     for (const o of hit){ damage(o, atkOf(u)*.8, u, true); if (!UDEF[o.type].siege) o.stun = Math.max(o.stun || 0, .9); }
     ring(u.x, u.y, 70, '#d9c28a'); puff(u.x, u.y, 'dust', 8); sfx('thud', u.x, u.y); u.skT = 7; u.swing = u.swMax; u.hitDone = true;
   } else if (d.skill === 'healaura'){
-    for (const o of S.units) if (o.team === u.team && !o.dead && o.hp < o.maxHp && dist(o, u) < 130){ o.hp = Math.min(o.maxHp, o.hp + 8*(u.mMul || 1)); puff(o.x, o.y - 20, 'heal', 1, '#b784ff'); }
+    for (const o of S.units) if (o.team === u.team && !o.dead && !o.noHeal && o.hp < o.maxHp && dist(o, u) < 130){ o.hp = Math.min(o.maxHp, o.hp + 8*(u.mMul || 1)); puff(o.x, o.y - 20, 'heal', 1, '#b784ff'); }
     u.skT = 1.2;
   } else if (d.skill === 'summon'){
     if (S.units.filter(o => o.team === u.team).length < 90){ for (let i = 0; i < 2; i++) spawnMonster('skeleton', u.x + (Math.random() - .5)*40, u.y + (Math.random() - .5)*30, u.target); ring(u.x, u.y, 50, '#b784ff'); sfx('magic', u.x, u.y); }
@@ -1028,6 +1065,16 @@ function breath(u, t){
 }
 const lairs = () => S.buildings.filter(b => b.kind === 'lair' && !b.dead);
 /* ---------- village walls ---------- */
+function coreRing(team, half){
+  const tc = S.buildings.find(b => b.team === team && b.kind === 'tc' && !b.dead); if (!tc) return [];
+  const gx0 = Math.floor((tc.x - half)/16), gx1 = Math.floor((tc.x + half)/16), gy0 = Math.floor((tc.y - half)/16), gy1 = Math.floor((tc.y + half)/16);
+  const c = (gx, gy) => ({ x: gx*16 + 8, y: gy*16 + 8 }), out = [], mx = (gx0 + gx1) >> 1, my = (gy0 + gy1) >> 1, gt = (p, on) => { if (on) p.gate = true; return p; };
+  for (let gx = gx0; gx <= gx1; gx++) out.push(gt(c(gx, gy0), Math.abs(gx - mx) <= 1));
+  for (let gy = gy0 + 1; gy <= gy1; gy++) out.push(gt(c(gx1, gy), Math.abs(gy - my) <= 1));
+  for (let gx = gx1 - 1; gx >= gx0; gx--) out.push(gt(c(gx, gy1), Math.abs(gx - mx) <= 1));
+  for (let gy = gy1 - 1; gy > gy0; gy--) out.push(gt(c(gx0, gy), Math.abs(gy - my) <= 1));
+  return out.filter(p => validPlace({ kind: 'wall', w: 16, h: 16, x: p.x, y: p.y }));
+}
 function villageRing(team){
   const tc = S.buildings.find(b => b.team === team && b.kind === 'tc' && !b.dead); if (!tc) return [];
   const objs = [...S.buildings.filter(b => b.team === team && !b.dead && b.kind !== 'wall' && dist(b, tc) < 430), ...S.farms.filter(f => f.tc === tc)];
@@ -1248,16 +1295,29 @@ function steer(u, tx, ty, dt, arrive, ignore, reach){
   }
   return steerRaw(u, tx, ty, dt, arrive, ignore);
 }
+// spatial buckets, rebuilt once per frame: static obstacles by the cells they cover
+const BKC = 64, OBK = new Map(), EMPTY = [];
+const cellKey = (cx, cy) => cx*4096 + cy;
+function buildBuckets(){
+  OBK.clear();
+  const add = (o, hw, hh) => { const x0 = Math.floor((o.x - hw)/BKC), x1 = Math.floor((o.x + hw)/BKC), y0 = Math.floor((o.y - hh)/BKC), y1 = Math.floor((o.y + hh)/BKC);
+    for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++){ const k = cellKey(x, y); let a = OBK.get(k); if (!a){ a = []; OBK.set(k, a); } a.push(o); } };
+  for (const t of S.trees) if (t.amount > 0) add(t, t.r + 16, t.r + 16);
+  for (const m of S.mines) if (m.amount > 0) add(m, m.r + 16, m.r + 16);
+  for (const b of S.buildings) if (!b.dead) add(b, b.w/2 + 16, b.h/2 + 16);
+}
 function collide(u){
   if (UDEF[u.type].fly){ u.x = clamp(u.x, 12, WW - 12); u.y = clamp(u.y, 60, WH - 8); return; }
-  for (const list of obstacles()) for (const o of list){
+  const near = OBK.get(cellKey(Math.floor(u.x/BKC), Math.floor(u.y/BKC))) || EMPTY;
+  for (const o of near){
+    if (o.w) continue;
     if (o.amount <= 0) continue;
     const dx = u.x - o.x, dy = u.y - o.y; if (Math.abs(dx) > 40 || Math.abs(dy) > 40) continue;
     const d = Math.hypot(dx, dy), m = o.r + u.r;
     if (d < m && d > .001){ u.x = o.x + dx/d*m; u.y = o.y + dy/d*m; }
   }
-  for (const b of S.buildings){
-    if (b.dead || (b.gate && b.team === u.team)) continue;
+  for (const b of near){
+    if (!b.w || b.dead || (b.gate && b.team === u.team)) continue;
     const p = rectPt(b, u.x, u.y), dx = u.x - p.x, dy = u.y - p.y, d = Math.hypot(dx, dy);
     if (d < u.r){
       if (d > .001){ u.x = p.x + dx/d*u.r; u.y = p.y + dy/d*u.r; }
@@ -1270,11 +1330,15 @@ function collide(u){
   u.x = clamp(u.x, 12, WW - 12); u.y = clamp(u.y, 30, WH - 8);
 }
 
+const UBK = new Map();
 function separate(){
-  const us = S.units;
+  const us = S.units; UBK.clear();
+  for (let i = 0; i < us.length; i++){ const u = us[i]; if (UDEF[u.type].fly) continue; const k = cellKey(Math.floor(u.x/40), Math.floor(u.y/40)); let a = UBK.get(k); if (!a){ a = []; UBK.set(k, a); } a.push(i); }
   for (let i = 0; i < us.length; i++){
-    const a = us[i];
-    for (let j = i + 1; j < us.length; j++){
+    const a = us[i]; if (UDEF[a.type].fly) continue;
+    const cx = Math.floor(a.x/40), cy = Math.floor(a.y/40);
+    for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++){ const cell = UBK.get(cellKey(cx + ox, cy + oy)); if (!cell) continue; for (const j of cell){
+      if (j <= i) continue;
       const b = us[j]; if (UDEF[a.type].fly || UDEF[b.type].fly) continue; const dx = b.x - a.x, dy = b.y - a.y;
       if (Math.abs(dx) > 40 || Math.abs(dy) > 40) continue;
       const ff = a.type === 'farmer' && b.type === 'farmer';
@@ -1285,7 +1349,7 @@ function separate(){
         const wa = a.working ? (ff ? 0 : .2) : 1, wb = b.working ? (ff ? 0 : .2) : 1;
         a.x -= px*wa; a.y -= py*wa; b.x += px*wb; b.y += py*wb;
       }
-    }
+    } }
   }
 }
 
@@ -1411,9 +1475,9 @@ function kill(u){
     if (!UDEF[u.type].boss && !u.boss && u.type !== 'lich' && !u.revived){ S.graves.push({ type: u.type, x: u.x, y: u.y, t: S.time }); if (S.graves.length > 60) S.graves.shift(); }
     const base = UDEF[u.type].hp/10; let food = 0, gold = 0;
     if (u.type === 'guardian'){ food = 900; gold = 700; toast('Đã hạ Chúa Hang! Hang giờ không còn được bảo vệ', false); }
-    else if (u.boss){ food = 350; gold = 280; toast('Đã hạ ' + (u.bname || UDEF[u.type].name) + '!', false); }
+    else if (u.boss){ food = 700; gold = 560; toast('Đã hạ ' + (u.bname || UDEF[u.type].name) + '!', false); }
     else if (u.type === 'demon'){ food = 200; gold = 150; }
-    else { if (Math.random() < .7) food = Math.max(4, Math.round(base*(.8 + Math.random()*.8))); if (Math.random() < .35) gold = Math.max(2, Math.round(base*.6*(.6 + Math.random()))); }
+    else { food = Math.max(8, Math.round(base*2*(.8 + Math.random()*.8))); if (Math.random() < .6) gold = Math.max(4, Math.round(base*1.2*(.6 + Math.random()))); }
     if (food){ S.res.food += food; floatText(u.x - 10, u.y - 30, '+' + food, RES_COL.food, 'meat'); }
     if (gold){ S.res.gold += gold; floatText(u.x + 12, u.y - 46, '+' + gold, RES_COL.gold, 'gold'); }
     if (food || gold) sfx('coin', u.x, u.y);
@@ -1460,7 +1524,11 @@ function updateUnit(u, dt){
   if (u.stun > 0){ u.stun -= dt; u.moving = false; return; }
   const bx = u.x, by = u.y, d = UDEF[u.type];
   if (d.mon){ monsterSkills(u, dt); if (u.dead) return; }
-  if (u.type === 'farmer') updateFarmer(u, dt); else if (u.type === 'doctor') updateDoctor(u, dt); else updateSoldier(u, dt);
+  if (u.charmT > 0){ u.charmT -= dt; if (u.charmT <= 0){ u.team = u.charmFrom; u.charmT = 0; u.state = 'idle'; u.target = null; u.wave = true; if (u.sel) setSel(S.sel.filter(o => o !== u)); } }
+  if (d.boom && u.state === 'attack' && u.target && !u.target.dead && inRange(u, u.target, 6)){
+    splashDamage(u.x, u.y, 85, 70, u, 1.2); ring(u.x, u.y, 85, '#ff9a3c'); puff(u.x, u.y - 8, 'poof', 16, '#ff9a3c'); puff(u.x, u.y - 8, 'poof', 8, '#3a3440'); sfx('boom', u.x, u.y); kill(u); return;
+  }
+  if (u.type === 'farmer') updateFarmer(u, dt); else if (u.type === 'doctor') updateDoctor(u, dt); else if (u.type === 'hypno') updateHypno(u, dt); else updateSoldier(u, dt);
   if (u.swing > 0){
     const SWm = u.swMax || SW; u.swing -= dt; const p = 1 - Math.max(0, u.swing)/SWm;
     if (!u.hitDone && p >= .45){
@@ -1612,8 +1680,43 @@ function findPatient(u){
   }
   return best;
 }
+// hypnotist: channels on a monster (longer for tougher ones), then it fights for us for a while; never bosses
+function charmTime(t){ return 1.5 + t.maxHp/60; }
+function updateHypno(u, dt){
+  u.working = false;
+  if (S.ais[u.team] && !(u.fleeT > 0)){
+    let m = null, md = 95; for (const o of S.units){ if (o.team === u.team || o.dead) continue; const d = dist(o, u); if (d < md){ md = d; m = o; } }
+    if (m){ const ax = u.x - m.x, ay = u.y - m.y, al = Math.hypot(ax, ay) || 1; u.state = 'move'; u.tx = clamp(u.x + ax/al*110, 20, WW - 20); u.ty = clamp(u.y + ay/al*110, 40, WH - 20); u.target = null; u.castT = 0; u.fleeT = 1.2; }
+  }
+  if (u.fleeT > 0) u.fleeT -= dt;
+  if (u.state === 'move'){ u.castT = 0; if (steer(u, u.tx, u.ty, dt, 4)) u.state = 'idle'; return; }
+  const ok = o => o && !o.dead && o.team !== u.team && UDEF[o.type].mon && !o.boss && !UDEF[o.type].boss && !o.guardOf && !(o.charmT > 0);
+  let t = u.target;
+  if (!ok(t)){ t = u.target = null; u.castT = 0; u.scanT = (u.scanT || 0) - dt; if (u.scanT <= 0){ u.scanT = .5; let bd = 230; for (const o of S.units){ if (!ok(o)) continue; const d = dist(o, u); if (d < bd){ bd = d; t = o; } } u.target = t; } }
+  if (t){
+    if (dist(u, t) > UDEF.hypno.range){ u.castT = 0; steer(u, t.x, t.y, dt, 20); return; }
+    u.moving = false; u.face = t.x - t.y > u.x - u.y ? 1 : -1; u.state = 'cast';
+    u.castT = (u.castT || 0) + dt;
+    if (Math.random() < dt*6) puff(t.x + (Math.random() - .5)*14, t.y - 22, 'heal', 1, '#e58cff');
+    if (u.castT >= charmTime(t)){
+      t.charmFrom = t.team; t.team = u.team; t.charmT = 14 + t.maxHp/25; t.state = 'idle'; t.target = null; t.wave = false; t.hold = 0;
+      ring(t.x, t.y, 30, '#e58cff'); for (let i = 0; i < 6; i++) puff(t.x + (Math.random() - .5)*20, t.y - 20, 'heal', 1, '#e58cff'); sfx('magic', t.x, t.y);
+      u.castT = 0; u.target = null;
+    }
+    return;
+  }
+  u.state = 'idle'; u.moving = false;
+  if (u.follow && dist(u, u.follow) > 70) steer(u, u.follow.x, u.follow.y, dt, 60);
+}
 function updateDoctor(u, dt){
   u.working = false;
+  if (S.monster && S.ais[u.team] && !(u.fleeT > 0)){
+    let m = null, md = 95; for (const o of S.units){ if (o.team === u.team || o.dead) continue; const d = dist(o, u); if (d < md){ md = d; m = o; } }
+    if (m){ const tc = S.buildings.find(b => b.team === u.team && b.kind === 'tc' && !b.dead), ax = u.x - m.x, ay = u.y - m.y, al = Math.hypot(ax, ay) || 1;
+      const hx = tc ? (tc.x - u.x) : 0, hy = tc ? (tc.y - u.y) : 0, hl = Math.hypot(hx, hy) || 1;
+      u.state = 'move'; u.tx = clamp(u.x + (ax/al*.7 + hx/hl*.3)*110, 20, WW - 20); u.ty = clamp(u.y + (ay/al*.7 + hy/hl*.3)*110, 40, WH - 20); u.target = null; u.fleeT = 1.2; }
+  }
+  if (u.fleeT > 0) u.fleeT -= dt;
   if (u.state === 'move'){ if (steer(u, u.tx, u.ty, dt, 4)){ u.state = 'idle'; } return; }
   if (u.follow && u.follow.dead) u.follow = null;
   u.scanT = (u.scanT || 0) - dt;
@@ -1626,6 +1729,7 @@ function updateDoctor(u, dt){
     if (u.atkCd <= 0){
       u.atkCd = UDEF.doctor.cd; u.swing = SW; u.hitDone = true;
       t.hp = Math.min(t.maxHp, t.hp + healOf(u));
+      if ((S.up[u.team] || NOUP).has('aoeheal')) for (const o of S.units) if (o !== t && o.team === u.team && !o.dead && o.hp < o.maxHp && !UDEF[o.type].mon && dist(o, t) < 65){ o.hp = Math.min(o.maxHp, o.hp + healOf(u)*.6); puff(o.x, o.y - 18, 'heal', 1, '#6be38a'); }
       for (let i = 0; i < 3; i++) puff(t.x + (Math.random() - .5)*12, t.y - 18, 'heal', 1, '#6be38a');
       sfx('heal', t.x, t.y);
     }
@@ -1760,12 +1864,14 @@ function updateBuilding(b, dt){
     b.atkCd = (b.atkCd || 0) - dt;
     if (b.atkCd <= 0){
       const up = S.up[b.team] || NOUP, mas = b.kind === 'tower' && up.has('masonry');
-      const Rg = sh.range + (up.has('arrows') ? 20 : 0) + (mas ? 25 : 0), cands = [];
+      const tw = b.kind === 'tower', gunT = tw && up.has('guntower'), canT = tw && up.has('cannontower');
+      const Rg = sh.range + (up.has('arrows') ? 20 : 0) + (mas ? 25 : 0) + (gunT ? 30 : 0), cands = [];
       for (const o of S.units){ if (o.team === b.team || o.dead) continue; const p = rectPt(b, o.x, o.y), d = Math.hypot(o.x - p.x, o.y - p.y); if (d < Rg) cands.push([d, o]); }
       if (cands.length){
         cands.sort((a, c) => a[0] - c[0]); b.atkCd = sh.cd;
-        const fire = up.has('firearrow'), dmg = sh.dmg + (up.has('arrows') ? 1 : 0) + (fire ? 2 : 0) + (mas ? 3 : 0);
-        for (let i = 0; i < (sh.n || 1); i++) fireShot(b, b.x + (i ? 16 : 0), b.y + b.h/2 - BDEF[b.kind].wallH - 6, cands[Math.min(i, cands.length - 1)][1], fire ? 'fire' : 'arrow', dmg, 0);
+        const fire = up.has('firearrow'), ag = b.kind === 'tc' ? (S.age[b.team] || 1) - 1 : 0, dmg = sh.dmg + (up.has('arrows') ? 1 : 0) + (fire ? 2 : 0) + (mas ? 3 : 0) + ag*3 + (canT ? 16 : gunT ? 8 : 0);
+        const shots = (sh.n || 1) + (ag >= 2 ? 1 : 0) + (tw ? (up.has('volley3') ? 2 : up.has('volley2') ? 1 : 0) : 0);
+        for (let i = 0; i < shots; i++) fireShot(b, b.x + (i ? 16 : 0), b.y + b.h/2 - BDEF[b.kind].wallH - 6, cands[Math.min(i, cands.length - 1)][1], canT ? 'ball' : gunT ? 'bullet' : fire ? 'fire' : 'arrow', dmg, canT ? 45 : 0);
       } else b.atkCd = .3;
     }
   }
@@ -1773,7 +1879,7 @@ function updateBuilding(b, dt){
   else if (b.kind === 'tc' && false){ b.smokeT -= dt; if (b.smokeT <= 0){ b.smokeT = .9; puff(b.x + b.w/2 - 22, b.y + b.h/2 - 6 - 38 - 38, 'smoke', 1, '#e8e4dc'); } }
   if (!b.queue.length){ b.qT = 0; return; }
   const type = b.queue[0];
-  if (isUnitQ(type) && teamOf(b.team).length >= popCap(b.team)){ if (b.team === 0 && !S.spectate && !S.warnedPop){ S.warnedPop = true; toast('Hết chỗ ở, xây thêm nhà dân để sinh tiếp', true); } return; }
+  if (isUnitQ(type) && teamOf(b.team).filter(o => !(o.charmT > 0)).length >= popCap(b.team)){ if (b.team === 0 && !S.spectate && !S.warnedPop){ S.warnedPop = true; toast('Hết chỗ ở, xây thêm nhà dân để sinh tiếp', true); } return; }
   b.qT += dt;
   if (b.qT >= qTime(type)){
     b.qT = 0; b.queue.shift();
@@ -1812,6 +1918,8 @@ function aiInit(){
   S.ais = {};
   for (const t of S.aiTeams) S.ais[t] = { res: t === 0 ? S.res : { food: 200, wood: 150, gold: 100, stone: 100, iron: 0, lead: 0 }, econT: t*.5, warT: t*.25, mode: 'grow', cool: 0, raid: [], raidCool: 200, baitCool: 330, amb: null, L: null, P: aiPersonality() };
 }
+// tuning knobs for the survival AI (only used when S.monster)
+const AICFG = { rush: 0, near: 0, flee: 110, arch: 1.9, wantF: 30, spear: 0, boss: 1, dodge: 0 };
 let AT = 1, AHOME = EB, AFOE = PB;
 function aiPersonality(){
   const r = (a, b) => a + Math.random()*(b - a);
@@ -1873,7 +1981,7 @@ function aiFarm(tc){
 function aiAssign(u, kind){
   const tc = aiTC() || u;
   if (kind === 'farm'){
-    const f = nearestOf(S.farms, tc.x, tc.y, f => f.tc === tc && farmFree(f, u));
+    const f = nearestOf(S.farms, tc.x, tc.y, f => (f.tc === tc || (S.monster && f.tc && f.tc.team === AT)) && farmFree(f, u));
     if (f){ assignGather(u, f); return; }
     kind = 'tree';
   }
@@ -1884,6 +1992,7 @@ function aiAssign(u, kind){
     if (r.amount <= 0) continue;
     let d = Infinity; for (const b of drops) d = Math.min(d, Math.hypot(r.x - b.x, r.y - b.y));
     if (Math.hypot(r.x - AFOE.x, r.y - AFOE.y) < 520) d += 900;
+    if (S.monster && AICFG.near){ const h = dist(r, tc); if (h > AICFG.near) d += (h - AICFG.near)*3; }
     if (d < bd){ bd = d; best = r; }
   }
   if (best) assignGather(u, best); else if (kind !== 'tree') aiAssign(u, kind === 'gold' ? 'tree' : 'gold');
@@ -1896,7 +2005,7 @@ function aiEconomy(){
   const has = k => S.buildings.some(b => b.team === AT && !b.dead && !b.building && b.kind === k);
   const any = k => S.buildings.some(b => b.team === AT && !b.dead && b.kind === k);
   const count = k => S.buildings.filter(b => b.team === AT && !b.dead && b.kind === k).length;
-  const wantF = S.monster ? Math.min(30, 8 + Math.floor(S.time/14)) : Math.min(21 + ai.P.greed, 7 + ai.P.greed + Math.floor(S.time/25));
+  const wantF = S.monster ? Math.min(AICFG.wantF, 8 + Math.floor(S.time/14)) : Math.min(21 + ai.P.greed, 7 + ai.P.greed + Math.floor(S.time/25));
   // climb the ages, saving resources for the next one
   ai.saving = null;
   const nextId = 'age' + (age + 1), nextT = TECH[nextId];
@@ -1904,16 +2013,19 @@ function aiEconomy(){
     ai.saving = nextT.cost;
     if (!tc.queue.length && aiAfford(nextT.cost)){ aiPay(nextT.cost); tc.queue.push('tech:' + nextId); ai.saving = null; }
   }
-  if ((!ai.saving || farmers.length < 14) && farmers.length + tc.queue.filter(q => q === 'farmer').length < wantF && tc.queue.length < 2 && pop < cap && aiAfford(COST.farmer)){ aiPay(COST.farmer); tc.queue.push('farmer'); }
+  if ((S.monster || !ai.saving || farmers.length < 14) && farmers.length + tc.queue.filter(q => q === 'farmer').length < wantF && tc.queue.length < 2 && pop < cap && aiAfford(COST.farmer)){ aiPay(COST.farmer); tc.queue.push('farmer'); }
   const building = S.buildings.filter(b => b.team === AT && b.building && !b.dead && b.kind !== 'wall'), bk = new Set(building.map(b => b.kind));
   if (pop >= cap - 4 && cap < POP_MAX && !bk.has('house')) aiBuild('house', tc.x, tc.y, 190);
   if (building.length < 2){
     const front = { x: tc.x + (AFOE.x - tc.x)*.12, y: tc.y + (AFOE.y - tc.y)*.12 };
     const store = S.buildings.find(b => b.team === AT && !b.dead && b.kind === 'store');
     if (farmers.length >= 8 && !any('store')){ const t = nearestOf(S.trees, tc.x, tc.y, t => dist(t, tc) > 280); if (t) aiBuild('store', t.x, t.y, 60); }
-    else if (age >= 2 && ai.weak && ai.hot && count('tower') < 2 + age && S.time - (ai.towerT || -99) > 30 && aiBuild('tower', ai.hot.x, ai.hot.y, 30)) ai.towerT = S.time;
+    else if (age >= 2 && (!S.monster || (any('range') && any('smith'))) && ai.weak && ai.hot && count('tower') < 2 + age && S.time - (ai.towerT || -99) > 30 && aiBuild('tower', ai.hot.x, ai.hot.y, 30)) ai.towerT = S.time;
+    else if (S.monster && age >= 2 && !any('smith')) aiBuild('smith', tc.x, tc.y, 200);
+    else if (S.monster && age >= 2 && !any('clinic')) aiBuild('clinic', tc.x, tc.y, 150);
     else if (S.monster && age >= 2 && !any('range')) aiBuild('range', tc.x, tc.y, 190);
-    else if (S.monster && age >= 2 && count('tower') < 1 + age && S.time - (ai.towerT || -99) > 25 && (() => { const ls = lairs(), l = ls[count('tower') % Math.max(1, ls.length)]; if (!l) return false; const d = dist(l, tc); return aiBuild('tower', tc.x + (l.x - tc.x)/d*190, tc.y + (l.y - tc.y)/d*190, 40); })()) ai.towerT = S.time;
+    else if (S.monster && age >= 2 && !any('stable') && any('clinic')) aiBuild('stable', tc.x, tc.y, 210);
+    else if (S.monster && age >= 2 && any('range') && any('smith') && count('tower') < 2 + age && S.time - (ai.towerT || -99) > 25 && (() => { const ls = lairs(), l = ls[count('tower') % Math.max(1, ls.length)]; if (!l) return false; const d = dist(l, tc); return aiBuild('tower', tc.x + (l.x - tc.x)/d*190, tc.y + (l.y - tc.y)/d*190, 40); })()) ai.towerT = S.time;
     else if (age >= 2 && !any('smith')) aiBuild('smith', tc.x, tc.y, 200);
     else if (age >= 2 && !any('range')) aiBuild('range', tc.x, tc.y, 210);
     else if (age >= 3 && !any('workshop')) aiBuild('workshop', tc.x, tc.y, 230);
@@ -1928,32 +2040,52 @@ function aiEconomy(){
     else if (farmers.length >= 15 && count('barracks') < 2 && ai.res.wood > 260) aiBuild('barracks', tc.x, tc.y, 230);
     else if (age >= 4 && count('gunrange') < 2 && ai.res.wood > 300) aiBuild('gunrange', tc.x, tc.y, 250);
   }
+  if (S.monster && AT === 0){
+    const r = ai.res, drops = S.buildings.filter(b => b.team === AT && !b.dead && (b.kind === 'tc' || b.kind === 'store'));
+    // a store next to any busy, far work site
+    if (count('store') < 5 && r.wood > 120 && !S.buildings.some(b => b.team === AT && b.building && !b.dead && b.kind === 'store')){
+      const load = new Map(); for (const f of farmers) if (f.res && f.resKind !== 'farm') load.set(f.res, (load.get(f.res) || 0) + 1);
+      let site = null, best = 2; for (const [res, n] of load){ const d = drops.reduce((m, b) => Math.min(m, dist(b, res)), 9999); if (d > 300 && n > best){ best = n; site = res; } }
+      if (site) aiBuild('store', site.x, site.y, 50);
+    }
+    // traps just outside every gate
+    ai.trapT = (ai.trapT || 0) - 1;
+    if (ai.trapT <= 0 && r.wood > 150 && S.traps.length < 12){
+      ai.trapT = 15;
+      for (const g of S.buildings){ if (g.team !== AT || g.dead || !g.gate || S.traps.length >= 12 || r.wood < 60) continue; const d = dist(g, tc) || 1, p = { kind: 'trap', w: 22, h: 22, x: Math.round(g.x + (g.x - tc.x)/d*34), y: Math.round(g.y + (g.y - tc.y)/d*34) };
+        if (S.traps.some(t => Math.hypot(t.x - p.x, t.y - p.y) < 40) || !validPlace(p)) continue; aiPay(COST.trap); S.traps.push({ x: p.x, y: p.y, w: 22, h: 22, hp: 100, max: 100, team: AT, t: 0 }); }
+    }
+  }
   if (S.monster){
     const r = ai.res, nb = S.buildings.filter(b => b.team === AT && b.building && !b.dead && b.kind !== 'wall').length;
     const towerAt = () => { const n = count('tower'), ls = lairs(), l = ls[n % Math.max(1, ls.length)], a = (l ? Math.atan2(l.y - tc.y, l.x - tc.x) : n) + (Math.floor(n/Math.max(1, ls.length)) % 2 ? .6 : 0), d = 180 + (n >= 8 ? 70 : 0); return { x: tc.x + Math.cos(a)*d, y: tc.y + Math.sin(a)*d }; };
     if (nb < 3){
-      if (farmers.length >= 12 && count('barracks') < 1 + Math.min(2, age - 1) && r.wood > 240) aiBuild('barracks', tc.x, tc.y, 200);
+      if ((age < 2 || (any('range') && any('smith'))) && farmers.length >= 12 && count('barracks') < 1 + Math.min(2, age - 1) && r.wood > 240) aiBuild('barracks', tc.x, tc.y, 200);
       else if (age >= 2 && count('range') < Math.min(3, age) && r.wood > 240) aiBuild('range', tc.x, tc.y, 200);
-      else if (age >= 2 && count('tower') < 2 + age*2 && r.wood > 130 && r.gold > 60 && (!ai.saving || r.wood > 300)){ const p = towerAt(); aiBuild('tower', p.x, p.y, 20); }
+      else if (age >= 2 && any('range') && any('smith') && count('tower') < 4 + age*2 && r.wood > 130 && r.gold > 60 && (!ai.saving || r.wood > 300)){ const p = towerAt(); aiBuild('tower', p.x, p.y, 20); }
     }
   }
+  const docWant = Math.min(7, 1 + Math.floor(mil.length/4)), docsN = mine.filter(u => u.type === 'doctor').length + S.buildings.reduce((n, b) => n + (b.team === AT ? b.queue.filter(q => q === 'doctor').length : 0), 0);
+  if (S.monster && !(has('clinic') && docsN < docWant)) for (const id of ['forge', 'mail', 'arrows', 'leather', 'medic', 'volley2', 'aoeheal', 'volley3', 'guntower', 'cannontower', 'drill', 'march', 'steel', 'chain', 'firearrow', 'masonry', 'condition', 'plate', 'surgery']) if (aiTryTech(id)) break;
   if (!ai.saving){
     const want = [];
     if (farmers.length >= 12) want.push('loom');
     if (has('store') && farmers.length >= 10) want.push('axe', 'pick');
     if (age >= 2) want.push('plow');
-    if (age >= 2 && mil.length >= 6) want.push('forge', 'arrows', 'mail', 'leather', 'medic');
+    if (age >= 2 && mil.length >= (S.monster ? 3 : 6)) want.push('forge', 'arrows', 'mail', 'leather', 'medic');
+    if (S.monster && age >= 3) want.push('masonry', 'steel', 'chain');
     if (age >= 3) want.push('wheel', 'saw', 'deepmine', 'steel', 'chain', 'drill', 'march', 'horseshoe', 'firearrow', 'masonry');
     if (age >= 4) want.push('plate', 'condition', 'powder', 'explosive', 'ironwheel', 'surgery');
     if (age >= 5) want.push('rifling', 'steam');
     for (const id of want){ const T = TECH[id]; if (ai.res.food < (T.cost.food || 0) + 120) continue; if (aiTryTech(id)) break; }
   }
   // palisade around the village, a few segments at a time
-  if ((age >= 2 || (S.monster && farmers.length >= 12)) && (!ai.saving || S.monster) && ai.res.wood > (S.monster ? 160 : 220)){
+  const coreOk = !S.monster || age < 2 || (any('range') && any('smith'));
+  if (coreOk && (age >= 2 || (S.monster && farmers.length >= 12)) && (!ai.saving || S.monster) && ai.res.wood > (S.monster ? 160 : 220)){
     const under = S.buildings.filter(b => b.team === AT && b.kind === 'wall' && b.building && !b.dead).length;
     if (under < 10){
       ai.ringT = (ai.ringT || 0) - 1;
-      if (!ai.ring || ai.ringT <= 0){ ai.ring = villageRing(AT); ai.ringT = 30; }
+      if (!ai.ring || ai.ringT <= 0){ ai.ring = S.monster ? coreRing(AT, 200) : villageRing(AT); ai.ringT = 30; }
       let first = null, placed = 0;
       while (ai.ring.length && placed < 8 && ai.res.wood > 150 + COST.wall.wood){
         const c = ai.ring.shift();
@@ -1967,12 +2099,20 @@ function aiEconomy(){
     }
   }
   const base = [null, { farm: .44, tree: .34, gold: .17, stone: .05 }, { farm: .36, tree: .3, gold: .24, stone: .1 }, { farm: .32, tree: .24, gold: .22, stone: .1, iron: .12 },
-                { farm: .28, tree: .2, gold: .2, stone: .08, iron: .12, lead: .12 }, { farm: .28, tree: .2, gold: .2, stone: .06, iron: .13, lead: .13 }][age];
+                { farm: .28, tree: .2, gold: .2, stone: .08, iron: .24 }, { farm: .28, tree: .2, gold: .2, stone: .06, iron: .26 }][age];
   const shares = { ...base };
+  if (S.monster && age < 3 && shares.stone){ shares.tree += shares.stone*.7; shares.gold += shares.stone*.3; shares.stone = 0; }
   if (ai.res.food > 600){ shares.farm -= .12; shares.tree += .08; shares.gold += .04; }
   if (ai.res.gold > 900){ shares.gold -= .08; shares.tree += .08; }
   if (ai.res.wood < 120){ shares.tree += .1; shares.farm -= .05; shares.gold -= .05; }
   if (ai.saving) for (const [k, v] of Object.entries(ai.saving)){ const kk = k === 'food' ? 'farm' : k === 'wood' ? 'tree' : k; if (kk in shares && ai.res[k] < v) shares[kk] += .08; }
+  // survival: steer villagers to whatever is short against what we need to buy next
+  if (S.monster){
+    const RK = { farm: 'food', tree: 'wood', gold: 'gold', stone: 'stone', iron: 'iron', lead: 'lead' }, want = { food: 350, wood: 380, gold: 180, stone: 150, iron: 150, lead: 150 };
+    let sum = 0;
+    for (const k in shares){ const r = RK[k]; if (!r || shares[k] <= 0) continue; const need = want[r] + ((ai.saving && ai.saving[r]) || 0); shares[k] *= clamp(need/(ai.res[r] + 80), .3, 2.6); sum += shares[k]; }
+    if (sum > 0) for (const k in shares) shares[k] = Math.max(0, shares[k])/sum;
+  }
   const counts = {}; for (const k in shares) counts[k] = 0;
   for (const f of farmers) if (f.resKind in counts && (f.state === 'gather' || f.state === 'return')) counts[f.resKind]++;
   for (const f of farmers){
@@ -1986,6 +2126,11 @@ function aiEconomy(){
   if (over && under){ const f = farmers.find(f => f.resKind === over && f.state === 'gather' && !f.carry.amt && !(f.aiFlee > 0)); if (f){ if (f.res && f.res.worker === f) f.res.worker = null; aiAssign(f, under); } }
   const myFarms = S.farms.filter(f => f.tc === tc).length;
   if (myFarms < Math.min(8, Math.round(shares.farm*farmers.length))) aiFarm(tc);
+  else if (S.monster && AT === 0 && myFarms >= 8){
+    // more fields by the store once the town centre ring is full (survival AI spends the shared purse)
+    const all = S.farms.filter(f => f.tc && f.tc.team === AT).length, dep = S.buildings.find(b => b.team === AT && !b.dead && !b.building && b.kind === 'store') || tc;
+    if (all < Math.round(shares.farm*farmers.length) && aiAfford(COST.farm)){ const p = farmSpot(dep, dep); if (p) newFarm(dep, p); }
+  }
 }
 function aiTryTech(id){
   const T = TECH[id];
@@ -2004,17 +2149,19 @@ function aiProduce(){
   const reserve = farmers.length < Math.min(21 + P.greed, 7 + P.greed + Math.floor(S.time/25)) ? COST.farmer.food : 0;
   const hasB = k => S.buildings.some(b => b.team === AT && !b.dead && b.kind === k);
   const woodRes = S.monster ? 60 : (age >= 2 && (!hasB('range') || !hasB('smith'))) || (age >= 3 && !hasB('workshop')) || (age >= 4 && !hasB('gunrange')) ? 150 : farmers.length >= 8 && !hasB('store') ? 100 : 0;
-  const svF = mil.length < (age === 1 ? 4 : 4 + age*3) ? 0 : .6, sv = {}, milN = mil.length + 1;
+  const svF = mil.length < (age === 1 ? 4 : 4 + age*3) ? 0 : S.monster && AICFG.rush ? 1 : .6, sv = {}, milN = mil.length + 1;
   if (ai.saving) for (const [k, v] of Object.entries(ai.saving)) sv[k] = v*svF;
   const siegeN = cnt('catapult') + cnt('ballista') + cnt('cannon');
   const forts = S.buildings.filter(x => x.team !== AT && !x.dead && (x.kind === 'tower' || x.kind === 'castle')).length;
   for (const b of S.buildings){
     if (b.team !== AT || b.dead || b.building || b.queue.length >= (S.monster ? 3 : 2) || pop >= cap) continue;
     let t = null;
-    if (b.kind === 'barracks') t = age >= 4 && cnt('spear') + cnt('soldier') > milN*.35 ? null : pK > .25 || pA > .45 ? 'spear' : (cnt('spear') < cnt('soldier')*P.spear*(pc('soldier') > 3 ? 1.4 : 1) ? 'spear' : 'soldier');
-    else if (b.kind === 'range') t = cnt('archer') + cnt('firearcher') < milN*P.arch*.55*(S.monster ? 1.9 : 1)*(pI > .5 ? 1.3 : 1)*(pK > .3 ? .6 : 1) + 1 ? (age >= 3 && Math.random() < .6 ? 'firearcher' : 'archer') : null;
-    else if (b.kind === 'stable') t = cnt('knight') < milN*.28*P.cav*(pA > .3 ? 1.5 : 1)*(pc('spear')/n > .4 ? .5 : 1) + 1 ? 'knight' : null;
-    else if (b.kind === 'clinic') t = cnt('doctor') < Math.min(4, Math.floor(mil.length/4)) ? 'doctor' : null;
+    if (b.kind === 'barracks' && S.monster && age >= 4 && cnt('sapper') < milN*.12) t = 'sapper';
+    else if (b.kind === 'barracks' && S.monster && AICFG.spear) t = 'spear';
+    else if (b.kind === 'barracks') t = age >= 4 && cnt('spear') + cnt('soldier') > milN*.35 ? null : pK > .25 || pA > .45 ? 'spear' : (cnt('spear') < cnt('soldier')*P.spear*(pc('soldier') > 3 ? 1.4 : 1) ? 'spear' : 'soldier');
+    else if (b.kind === 'range') t = cnt('archer') + cnt('firearcher') < milN*P.arch*.55*(S.monster ? AICFG.arch : 1)*(pI > .5 ? 1.3 : 1)*(pK > .3 ? .6 : 1) + 1 ? (age >= 3 && Math.random() < .6 ? 'firearcher' : 'archer') : null;
+    else if (b.kind === 'stable') t = cnt('knight') < milN*.28*(S.monster ? 1.8 : 1)*P.cav*(pA > .3 ? 1.5 : 1)*(pc('spear')/n > .4 ? .5 : 1) + 1 ? 'knight' : null;
+    else if (b.kind === 'clinic') t = cnt('doctor') < (S.monster ? Math.min(7, 1 + Math.floor(mil.length/4)) : Math.min(4, Math.floor(mil.length/4))) ? 'doctor' : S.monster && age >= 3 && cnt('hypno') < Math.min(3, 1 + Math.floor(mil.length/10)) ? 'hypno' : null;
     else if (b.kind === 'workshop') t = siegeN < Math.min(6, milN*.2 + 1) ? (age >= 4 && Math.random() < .55 ? 'cannon' : forts || Math.random() < .55 ? 'catapult' : 'ballista') : null;
     else if (b.kind === 'gunrange') t = age >= 5 ? (Math.random() < .4 ? 'mg' : 'rifle') : 'musket';
     if (!t || (UDEF[t].age || 1) > age) continue;
@@ -2055,6 +2202,13 @@ function aiTactics(u, dt){
   }
   const t = u.target;
   if (u.state !== 'attack' || !t || t.dead || t.w) return false;
+  if (S.monster && u.team === 0 && u.hp < u.maxHp*.4 && u.rotCd <= 0 && dist(u, t) < 120){
+    const doc = S.units.find(o => o.team === u.team && !o.dead && o.type === 'doctor' && dist(o, u) < 520), tc = S.buildings.find(b => b.team === u.team && b.kind === 'tc' && !b.dead);
+    const ax = u.x - t.x, ay = u.y - t.y, al = Math.hypot(ax, ay) || 1;
+    if (doc){ u.rx = doc.x; u.ry = doc.y; } else if (tc){ u.rx = tc.x; u.ry = tc.y + tc.h/2 + 30; } else { u.rx = clamp(u.x + ax/al*110, 20, WW - 20); u.ry = clamp(u.y + ay/al*110, 40, WH - 20); }
+    u.retreatT = 6; u.rotCd = 8; u.target = null; u.state = 'move'; u.tx = u.rx; u.ty = u.ry;
+    return true;
+  }
   if (!UDEF[u.type].range && u.hp < u.maxHp*.35 && u.rotCd <= 0 && dist(u, t) < 60){
     const buddy = S.units.find(o => o !== u && o.team === u.team && !o.dead && (MELEE(o.type) || (UDEF[o.type].mon && !UDEF[o.type].range)) && o.hp > o.maxHp*.6 && dist(o, u) < 110);
     if (buddy){
@@ -2067,10 +2221,10 @@ function aiTactics(u, dt){
     }
   }
   if (UDEF[u.type].range && !UDEF[u.type].siege && u.kiteCd <= 0){
-    const m = S.units.find(o => o.team !== u.team && !o.dead && MELEE(o.type) && dist(o, u) < 44);
+    const m = S.units.find(o => o.team !== u.team && !o.dead && (MELEE(o.type) || (UDEF[o.type].mon && !UDEF[o.type].range)) && dist(o, u) < (S.monster ? 70 : 44));
     if (m){
       const ax = u.x - m.x, ay = u.y - m.y, al = Math.hypot(ax, ay) || 1;
-      u.rx = clamp(u.x + ax/al*60, 20, WW - 20); u.ry = clamp(u.y + ay/al*60, 40, WH - 20); u.retreatT = .7; u.kiteCd = 1.8;
+      const kd = S.monster ? 85 : 60; u.rx = clamp(u.x + ax/al*kd, 20, WW - 20); u.ry = clamp(u.y + ay/al*kd, 40, WH - 20); u.retreatT = S.monster ? .9 : .7; u.kiteCd = S.monster ? 1.1 : 1.8;
       return true;
     }
   }
@@ -2079,10 +2233,16 @@ function aiTactics(u, dt){
 function aiWar(dt){
   const ai = S.ais[AT], tc = aiTC();
   const mine = teamOf(AT), pl = teamOf(1 - AT), pMil = pl.filter(isMil);
-  const army = mine.filter(u => (isMil(u) || u.type === 'doctor') && !u.raid);
-  const fightersAll = army.filter(isMil), docs = army.filter(u => u.type === 'doctor');
+  const army = mine.filter(u => (isMil(u) || u.type === 'doctor' || u.type === 'hypno') && !u.raid && !(u.charmT > 0));
+  const fightersAll = army.filter(isMil), docs = army.filter(u => u.type === 'doctor' || u.type === 'hypno');
   let fighters = fightersAll;
   const MON = S.monster, rally = MON && tc ? { x: tc.x + 40, y: tc.y + tc.h/2 + 70 } : aiRally();
+  let gposts = null, leashR = 430;
+  if (MON && tc){
+    const cl = [];
+    for (const g of S.buildings){ if (g.team !== AT || g.dead || g.kind !== 'wall' || !g.gate || g.building) continue; const c = cl.find(c => Math.hypot(c.x - g.x, c.y - g.y) < 60); if (c){ c.n++; c.sx += g.x; c.sy += g.y; c.x = c.sx/c.n; c.y = c.sy/c.n; } else cl.push({ x: g.x, y: g.y, sx: g.x, sy: g.y, n: 1 }); }
+    if (cl.length){ gposts = cl.map(c => { const d = dist(c, tc) || 1; return { x: c.x + (tc.x - c.x)/d*38, y: c.y + (tc.y - c.y)/d*38, d }; }); leashR = Math.max(430, ...gposts.map(p => p.d + 130)); }
+  }
   ai.cool -= dt; ai.raidCool -= dt;
   for (const u of mine) if (u.aiRetarget > 0) u.aiRetarget -= dt;
 
@@ -2108,7 +2268,11 @@ function aiWar(dt){
       }
       continue;
     }
-    if (!pMil.some(p => dist(p, f) < 110)) continue;
+    if (MON){
+      const en = pMil.filter(p => !p.guardOf && !p.lair && dist(p, f) < 150);
+      if (en.length && !en.some(p => p.boss) && tc && dist(f, tc) < 280){ f.prevRes = f.res; f.fightHome = null; f.state = 'attack'; f.target = nearestIn(en, f); f.working = false; continue; }
+    }
+    if (!pMil.some(p => dist(p, f) < (S.monster ? AICFG.flee : 110))) continue;
     const o = localOdds(f, 220);
     if (o.aP > o.eP*1.2) continue;                       // our soldiers / towers have it: keep working
     const mates = farmers.filter(m => dist(m, f) < 170 && !(m.aiFlee > 0) && m.state !== 'attack' && m.state !== 'build');
@@ -2119,6 +2283,7 @@ function aiWar(dt){
     const home = tc || { x: AHOME.x, y: AHOME.y, h: 0 };           // too strong: run to the town centre
     f.aiFlee = 6; f.fleeRes = f.res; f.working = false;
     f.state = 'move'; f.tx = home.x + (Math.random() - .5)*60; f.ty = home.y + (AT ? -1 : 1)*(home.h/2 + 22);
+    if (MON){ const bs = pl.find(p => p.boss && !p.guardOf && dist(p, f) < 420); if (bs){ const d = dist(f, bs) || 1; f.tx = clamp(f.x + (f.x - bs.x)/d*300, 60, WW - 60); f.ty = clamp(f.y + (f.y - bs.y)/d*300, 100, WH - 60); } }
   }
   // repair under fire only when the local fight is being won
   for (const b of S.buildings){
@@ -2154,7 +2319,8 @@ function aiWar(dt){
   fighters = fightersAll.filter(u => !u.post);
   const myStuff = [...S.buildings.filter(b => b.team === AT && !b.dead), ...mine.filter(u => u.type === 'farmer')];
   const core = MON ? S.buildings.filter(b => b.team === AT && !b.dead && b.kind !== 'wall') : null;
-  const threats = MON ? pMil.filter(p => !p.guardOf && !p.lair && core.some(o => Math.hypot(o.x - p.x, o.y - p.y) < (o.kind === 'tc' ? 460 : 300))) : pMil.filter(p => myStuff.some(o => Math.hypot(o.x - p.x, o.y - p.y) < 280));
+  const walls = MON ? S.buildings.filter(b => b.team === AT && !b.dead && b.kind === 'wall') : null;
+  const threats = MON ? pMil.filter(p => !p.guardOf && !p.lair && (core.some(o => Math.hypot(o.x - p.x, o.y - p.y) < (o.kind === 'tc' ? 460 : 300)) || fightersAll.some(f => dist(f, p) < 220) || walls.some(w => dist(w, p) < 200))) : pMil.filter(p => myStuff.some(o => Math.hypot(o.x - p.x, o.y - p.y) < 280));
   if (threats.length){
     for (const u of ai.mode === 'attack' ? guards : fightersAll){
       if (u.retreatT > 0) continue;
@@ -2164,6 +2330,7 @@ function aiWar(dt){
     }
   }
 
+  if (MON && AICFG.boss){ const bs = pl.find(p => p.boss && !p.guardOf && tc && dist(p, tc) < 560); if (bs) for (const u of fightersAll){ if (u.type === 'spear' || u.type === 'knight'){ u.state = 'attack'; u.target = bs; u.aiRetarget = 1; } else if (!UDEF[u.type].range && dist(u, bs) < 120){ const others = pl.filter(p => p !== bs && !p.guardOf && dist(p, u) < 260); if (others.length){ u.state = 'attack'; u.target = nearestIn(others, u); } else { const d = dist(u, bs) || 1; u.state = 'move'; u.tx = u.x + (u.x - bs.x)/d*110; u.ty = u.y + (u.y - bs.y)/d*110; u.target = null; } u.aiRetarget = 1; } } }
   // leash: defenders never chase further than ~450px from their own village
   if (ai.mode === 'grow' || ai.mode === 'retreat' || (MON && ai.mode !== 'attack')){
     const mine2 = S.buildings.filter(b => b.team === AT && !b.dead);
@@ -2171,12 +2338,15 @@ function aiWar(dt){
       const t = u.target;
       if (u.state !== 'attack' || !t || t.dead || t.w) return;
       const home = mine2.reduce((m, b) => Math.min(m, dist(b, t)), 9999);
-      if (home > 450 || (MON && tc && dist(u, tc) > 430)){ const o = formOffset(i); u.state = 'move'; u.tx = rally.x + o.x; u.ty = rally.y + o.y; u.target = null; }
+      if (home > 450 || (MON && tc && home > 240 && dist(u, tc) > leashR)){ const o = formOffset(i); u.state = 'move'; u.tx = rally.x + o.x; u.ty = rally.y + o.y; u.target = null; }
     });
   }
   for (const u of guards){ const t = u.target; if (u.state === 'attack' && t && !t.dead && !t.w && dist(t, u.post) > 320){ u.state = 'move'; u.tx = u.post.x; u.ty = u.post.y; u.target = null; } }
   if (ai.mode === 'grow'){
     fighters.forEach((u, i) => {
+      if (gposts){ const p = gposts[i % gposts.length], k = Math.floor(i/gposts.length), rg = UDEF[u.type].range ? 26 : 0, d = dist(p, tc) || 1, px = p.x + (tc.x - p.x)/d*rg, py = p.y + (tc.y - p.y)/d*rg;
+        if (u.state === 'idle' && !threats.length && Math.hypot(u.x - px, u.y - py) > 40 + k*6){ const o = formOffset(k); u.state = 'move'; u.tx = px + o.x*.6; u.ty = py + o.y*.6; u.wave = false; }
+        return; }
       if (u.state === 'idle' && !threats.length && dist(u, rally) > 110){ const o = formOffset(i); u.state = 'move'; u.tx = rally.x + o.x; u.ty = rally.y + o.y; u.wave = false; }
     });
     for (const d of docs) d.follow = rally;
@@ -2210,7 +2380,7 @@ function aiWar(dt){
             }
           } else { const o = formOffset(i); u.state = 'move'; u.tx = ai.L.x + o.x; u.ty = ai.L.y + o.y; u.target = null; }
         });
-        for (const d of docs) d.follow = C;
+        for (const d of docs){ if (MON && tc){ const dd = dist(C, tc) || 1; d.follow = { x: C.x + (tc.x - C.x)/dd*70, y: C.y + (tc.y - C.y)/dd*70 }; } else d.follow = C; }
       }
     }
   }
@@ -2220,6 +2390,18 @@ function aiWar(dt){
     if (!fighters.length || dist(centroid(fighters), rally) < 200){ ai.mode = 'grow'; ai.cool = Math.max(ai.cool, 30); }
   }
 
+  // bombers: one melee unit blocks each, the rest step out of the blast, archers shoot it first
+  if (MON && AICFG.dodge && tc){
+    for (const bm of pl){
+      if (bm.type !== 'bomber' || bm.dead || dist(bm, tc) > 700) continue;
+      const mel = fightersAll.filter(u => !UDEF[u.type].range && dist(u, bm) < 170).sort((a, c) => dist(a, bm) - dist(c, bm));
+      mel.forEach((u, i) => {
+        if (i === 0){ u.state = 'attack'; u.target = bm; u.aiRetarget = 1; return; }
+        const d = dist(u, bm) || 1; u.state = 'move'; u.tx = u.x + (u.x - bm.x)/d*100; u.ty = u.y + (u.y - bm.y)/d*100; u.target = null; u.aiRetarget = 1;
+      });
+      for (const u of fightersAll) if (UDEF[u.type].range && dist(u, bm) < UDEF[u.type].range + 80){ u.state = 'attack'; u.target = bm; u.aiRetarget = 1; }
+    }
+  }
   // bait & ambush: a fast pair pokes the enemy, then runs back into the army waiting in hiding
   ai.baitCool -= dt;
   const endAmbush = () => {
@@ -2313,16 +2495,26 @@ function updateEnemyAI(dt){
   }
 }
 function update(dt){
+  if (S.gallery){ S.time += dt; return; }
   if (gridDirty) rebuildGrid();
   pathBudget = 6;
   if (S.over){ S.time += 0; }
   else S.time += dt;
   for (const u of S.units) if (!u.dead) updateUnit(u, dt);
   separate();
+  buildBuckets();
   for (const u of S.units) if (!u.dead) collide(u);
   S.units = S.units.filter(u => !u.dead);
   for (const b of S.buildings) updateBuilding(b, dt);
   burnTick(dt);
+  // traps: spike whatever walking enemy stands on them, and wear out
+  for (const tr of S.traps){
+    tr.t -= dt; if (tr.t > 0) continue; tr.t = .15;
+    const hit = []; for (const o of S.units){ if (o.dead || o.team === tr.team || UDEF[o.type].fly) continue; if (Math.abs(o.x - tr.x) < 13 + (o.r || 8) && Math.abs(o.y - tr.y) < 13 + (o.r || 8)) hit.push(o); if (hit.length >= 3) break; }
+    if (!hit.length) continue;
+    tr.t = .6; for (const o of hit) damage(o, 14, null, true); tr.hp -= 10*hit.length; puff(tr.x, tr.y, 'chip', 2, '#c98a55'); sfx('clash', tr.x, tr.y);
+  }
+  if (S.traps.some(t => t.hp <= 0)){ for (const t of S.traps) if (t.hp <= 0) puff(t.x, t.y, 'poof', 5, '#a9855a'); S.traps = S.traps.filter(t => t.hp > 0); }
   if (S.monster && !S.over) monsterDirector(dt);
   if (!S.over) updateEnemyAI(dt);
   for (const t of S.trees) if (t.shake > 0) t.shake -= dt;
@@ -2358,7 +2550,8 @@ function update(dt){
 
 /* ---------- drawing ---------- */
 function rr(x, y, w, h, r){ ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
-function hgrad(R, a, b, c){ const g = ctx.createLinearGradient(-R, 0, R, 0); g.addColorStop(0, a); g.addColorStop(.55, b); g.addColorStop(1, c); return g; }
+const HGRAD = new Map();
+function hgrad(R, a, b, c){ const k = R + a + b + c; let g = HGRAD.get(k); if (!g || g._c !== ctx){ g = ctx.createLinearGradient(-R, 0, R, 0); g.addColorStop(0, a); g.addColorStop(.55, b); g.addColorStop(1, c); g._c = ctx; HGRAD.set(k, g); } return g; }
 function cylPath(R, H){
   const e = R*.48;
   ctx.beginPath(); ctx.moveTo(-R, -H); ctx.lineTo(-R, -e);
@@ -2384,6 +2577,17 @@ function swingAng(p){
 }
 
 function drawTool(kind, col){
+  if (kind === 'staff'){
+    ctx.strokeStyle = '#7a4f2c'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(0, 2); ctx.lineTo(0, -14); ctx.stroke();
+    ctx.fillStyle = '#c77dff'; ctx.beginPath(); ctx.arc(0, -16, 3.2, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.8)'; ctx.beginPath(); ctx.arc(-1, -17, 1, 0, 7); ctx.fill();
+    return;
+  }
+  if (kind === 'bomb'){
+    ctx.fillStyle = '#3a3440'; ctx.beginPath(); ctx.arc(0, -6, 4.2, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.beginPath(); ctx.arc(-1.4, -7.4, 1.3, 0, 7); ctx.fill();
+    ctx.strokeStyle = '#c9a36a'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, -10); ctx.quadraticCurveTo(2, -13, 1, -15); ctx.stroke();
+    ctx.fillStyle = Math.sin(S.time*20) > 0 ? '#ffd35a' : '#ff8a3c'; ctx.beginPath(); ctx.arc(1, -15.5, 1.3, 0, 7); ctx.fill();
+    return;
+  }
   if (kind === 'potion'){
     ctx.fillStyle = '#d9eef0'; ctx.fillRect(-1.3, -11, 2.6, 5);
     ctx.fillStyle = '#9b6b2c'; ctx.fillRect(-1.6, -13, 3.2, 2.2);
@@ -2874,29 +3078,15 @@ const MINE_PAL = {
   iron:  { rocks: ['#6d6660', '#5e5752', '#7a726b', '#686059'], nug: '#b8653d', hi: '#f0a070' },
   lead:  { rocks: ['#7d8794', '#6f7986', '#8b95a2', '#808a97'], nug: '#9fb0c4', hi: '#eef4fa', sparkle: true },
 };
-function drawUnit(u){
-  if (UDEF[u.type].mon) return drawMonster(u);
-  if (UDEF[u.type].siege) return drawSiege(u);
-  const T = TEAM[u.team], ty = u.type === 'firearcher' ? 'archer' : u.type, tm = S.time, hurt = u.hurt > 0;
-  const fireA = u.type === 'firearcher' || (ARCH(u.type) && S.up[u.team].has('firearrow'));
-  const R = ty === 'soldier' ? 9.5 : ty === 'knight' ? 7.5 : 9, H = ty === 'soldier' ? 23 : ty === 'knight' ? 17 : 22;
-  let bob = 0, tilt, squash = 1;
-  if (u.moving){ bob = Math.abs(Math.sin(u.phase))*2.4; tilt = Math.sin(u.phase)*.13; if (ty === 'knight'){ bob *= .8; tilt *= .3; } }
-  else { tilt = Math.sin(tm*1.8 + u.id)*.025; squash = 1 + Math.sin(tm*2.6 + u.id*1.3)*.02; }
-  if (u.working){ const p = u.workT/workDur(u); if (p > .62 && p < .92) tilt += u.face*.1; }
-  const sp = u.swing > 0 ? 1 - u.swing/(u.swMax || SW) : -1;
-  if (ty !== 'archer' && !GUN(ty) && sp > .3 && sp < .7) tilt += u.face*.13;
-  const sw = u.moving ? Math.sin(u.phase) : 0;
-
-  ctx.save(); ctx.translate(u.x, u.y);
-  if (u.sel){
-    ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.6;
-    const SR = ty === 'knight' ? 17 : R + 5; ctx.beginPath(); ctx.ellipse(0, 0, SR, SR*.5, 0, 0, 7); ctx.fill(); ctx.stroke();
-  }
-  ctx.fillStyle = 'rgba(25,45,15,.28)'; ctx.beginPath(); ctx.ellipse(0, 0, (ty === 'knight' ? 15 : R*1.05) - bob*.4, ty === 'knight' ? 6 : R*.46, 0, 0, 7); ctx.fill();
-  ctx.translate(0, -bob); ctx.rotate(tilt); ctx.scale(1, squash);
-  if (ty === 'knight'){ drawHorse(u, sw, T, hurt); ctx.translate(-2, -14); }
-
+function drawCharm(u){
+  const y = -(u.hb || UDEF[u.type].hb || 36)*(u.bossScale || 1) - 6, a = S.time*4;
+  ctx.save(); ctx.translate(u.x, u.y + y); ctx.strokeStyle = '#e58cff'; ctx.lineWidth = 1.6; ctx.beginPath();
+  for (let i = 0; i < 18; i++){ const r = 1 + i*.35, q = a + i*.6; i ? ctx.lineTo(Math.cos(q)*r, Math.sin(q)*r*.6) : ctx.moveTo(Math.cos(q)*r, Math.sin(q)*r*.6); }
+  ctx.stroke(); ctx.restore();
+}
+// unit sprites: the body and the head of each look are painted once at 3x and reused every frame
+const USPR = new Map();
+function unitBodyVec(u, ty, T, R, H, hurt){
   cylPath(R, H);
   ctx.fillStyle = hurt ? '#ffffff' : hgrad(R, '#ffe8d0', '#f6d2ad', '#d9a97e'); ctx.fill();
   if (!hurt){
@@ -2921,6 +3111,14 @@ function drawUnit(u){
       ctx.fillStyle = hgrad(R, '#8e9b74', '#6b7a55', '#4d5a3c'); ctx.fillRect(-R - 1, cy, 2*R + 2, H);
       ctx.fillStyle = T.main; ctx.fillRect(-R - 1, cy + 3, 2*R + 2, 2.4);
       ctx.fillStyle = '#4a3b2a'; ctx.fillRect(-R - 1, -6.5, 2*R + 2, 2.2);
+    } else if (ty === 'hypno'){
+      ctx.fillStyle = hgrad(R, '#d6b3f2', '#a97ddb', '#7b54ad'); ctx.fillRect(-R - 1, cy, 2*R + 2, H);
+      ctx.fillStyle = T.main; ctx.fillRect(-R - 1, cy - .5, 2*R + 2, 2.4);
+      ctx.fillStyle = '#ffe07a'; ctx.beginPath(); ctx.arc(0, cy + 6, 1.8, 0, 7); ctx.fill();
+    } else if (ty === 'sapper'){
+      ctx.fillStyle = hgrad(R, '#a38b6c', '#86704f', '#63523a'); ctx.fillRect(-R - 1, cy, 2*R + 2, H);
+      ctx.fillStyle = T.main; ctx.fillRect(-R - 1, cy + 3, 2*R + 2, 2.4);
+      ctx.fillStyle = '#3a3440'; ctx.fillRect(-R - 1, cy + 8, 2*R + 2, 1.6);
     } else if (ty === 'doctor'){
       ctx.fillStyle = hgrad(R, '#ffffff', '#eef2f5', '#c9d2da'); ctx.fillRect(-R - 1, cy, 2*R + 2, H);
       ctx.fillStyle = T.main; ctx.fillRect(-R - 1, cy - .5, 2*R + 2, 2.4);
@@ -2935,9 +3133,10 @@ function drawUnit(u){
   cylPath(R, H); ctx.strokeStyle = 'rgba(70,45,30,.38)'; ctx.lineWidth = .8; ctx.stroke();
   ctx.fillStyle = hurt ? '#ffffff' : '#ffeedd'; ctx.beginPath(); ctx.ellipse(0, -H, R, R*.48, 0, 0, 7); ctx.fill();
 
-  ctx.save(); ctx.scale(u.face, 1);
+}
+function unitHeadVec(u, ty, T, R, H, hurt, sw, blink, flat){
   // face
-  const ex = 1.9, ey = -H*.66, blink = ((tm + u.blink) % 4.2) < .13;
+  const ex = 1.9, ey = -H*.66;
   ctx.fillStyle = '#2b2233';
   for (const dx of [-2.7, 2.7]){ ctx.beginPath(); ctx.ellipse(ex + dx, ey, 1.35, blink ? .35 : 1.85, 0, 0, 7); ctx.fill(); }
   if (!blink){ ctx.fillStyle = '#ffffff'; for (const dx of [-2.7, 2.7]){ ctx.beginPath(); ctx.arc(ex + dx + .45, ey - .7, .55, 0, 7); ctx.fill(); } }
@@ -2945,7 +3144,7 @@ function drawUnit(u){
   ctx.beginPath(); ctx.ellipse(ex - 4.4, ey + 2.7, 1.7, 1, 0, 0, 7); ctx.fill();
   ctx.beginPath(); ctx.ellipse(ex + 4.4, ey + 2.7, 1.7, 1, 0, 0, 7); ctx.fill();
   ctx.strokeStyle = '#8a4040'; ctx.lineWidth = .9; ctx.lineCap = 'round'; ctx.beginPath();
-  if (u.working || u.swing > 0){ ctx.moveTo(ex - 1.1, ey + 3.4); ctx.lineTo(ex + 1.1, ey + 3.4); }
+  if (flat){ ctx.moveTo(ex - 1.1, ey + 3.4); ctx.lineTo(ex + 1.1, ey + 3.4); }
   else ctx.arc(ex, ey + 2.4, 1.3, .15*Math.PI, .85*Math.PI);
   ctx.stroke();
 
@@ -2977,6 +3176,12 @@ function drawUnit(u){
     ctx.fillStyle = hurt ? '#ffffff' : '#56633f'; ctx.beginPath(); ctx.ellipse(0, -H + 1.5, R + 1.4, R*.85, 0, Math.PI, 0); ctx.closePath(); ctx.fill();
     ctx.fillStyle = '#46522f'; ctx.beginPath(); ctx.ellipse(0, -H + 1.5, R + 2.4, 2.2, 0, 0, 7); ctx.fill();
     ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.ellipse(-2.5, -H - R*.35, 3, 1.6, -.4, 0, 7); ctx.fill();
+  } else if (ty === 'hypno'){
+    ctx.fillStyle = hurt ? '#ffffff' : '#7b54ad'; ctx.beginPath(); ctx.moveTo(-R - 1.5, -H + 1.5); ctx.lineTo(R + 1.5, -H + 1.5); ctx.lineTo(2, -H - R*1.5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = T.main; ctx.fillRect(-R - 1, -H, 2*R + 2, 2); ctx.fillStyle = '#ffe07a'; ctx.beginPath(); ctx.arc(1, -H - R*.6, 1.4, 0, 7); ctx.fill();
+  } else if (ty === 'sapper'){
+    ctx.fillStyle = hurt ? '#ffffff' : '#d9534f'; ctx.beginPath(); ctx.ellipse(0, -H + 1, R + .6, R*.55, 0, Math.PI, 0); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#b43d3a'; ctx.beginPath(); ctx.moveTo(R - 1, -H + 1); ctx.lineTo(R + 4, -H + 4); ctx.lineTo(R + 2, -H - 1); ctx.closePath(); ctx.fill();
   } else if (ty === 'doctor'){
     ctx.fillStyle = hurt ? '#ffffff' : '#fdfdfd'; ctx.beginPath(); ctx.ellipse(0, -H + 1, R + .4, R*.62, 0, Math.PI, 0); ctx.closePath(); ctx.fill();
     ctx.strokeStyle = '#d4dae0'; ctx.lineWidth = .8; ctx.stroke();
@@ -2999,6 +3204,47 @@ function drawUnit(u){
     ctx.restore();
   }
 
+}
+function unitSprite(part, u, ty, T, R, H, blink, flat){
+  const key = part + '|' + u.type + '|' + u.team + '|' + (blink ? 1 : 0) + (flat ? 1 : 0) + '|' + (T.main);
+  let c = USPR.get(key);
+  if (!c){
+    const K = 2, ox = R + 16, oy = H + R*1.7 + 14, W = Math.ceil(ox + R + 12), HH = Math.ceil(oy + R + 6);
+    const cv = document.createElement('canvas'); cv.width = W*K; cv.height = HH*K;
+    const g = cv.getContext('2d'); g.scale(K, K); g.translate(ox, oy);
+    const saved = ctx; ctx = g;
+    try { if (part === 'b') unitBodyVec(u, ty, T, R, H, false); else unitHeadVec(u, ty, T, R, H, false, 0, blink, flat); } finally { ctx = saved; }
+    c = { cv, ox, oy, W, HH }; USPR.set(key, c);
+  }
+  ctx.drawImage(c.cv, -c.ox, -c.oy, c.W, c.HH);
+}
+function drawUnit(u){
+  if (UDEF[u.type].mon){ drawMonster(u); if (u.charmT > 0) drawCharm(u); return; }
+  if (u.type === 'hypno' && u.state === 'cast' && u.target && !u.target.dead){ ctx.strokeStyle = 'rgba(229,140,255,.55)'; ctx.lineWidth = 1.4; ctx.setLineDash([3, 4]); ctx.lineDashOffset = -S.time*20; ctx.beginPath(); ctx.moveTo(u.x, u.y - 22); ctx.lineTo(u.target.x, u.target.y - 18); ctx.stroke(); ctx.setLineDash([]); }
+  if (UDEF[u.type].siege) return drawSiege(u);
+  const T = TEAM[u.team], ty = u.type === 'firearcher' ? 'archer' : u.type, tm = S.time, hurt = u.hurt > 0;
+  const fireA = u.type === 'firearcher' || (ARCH(u.type) && S.up[u.team].has('firearrow'));
+  const R = ty === 'soldier' ? 9.5 : ty === 'knight' ? 7.5 : 9, H = ty === 'soldier' ? 23 : ty === 'knight' ? 17 : 22;
+  let bob = 0, tilt, squash = 1;
+  if (u.moving){ bob = Math.abs(Math.sin(u.phase))*2.4; tilt = Math.sin(u.phase)*.13; if (ty === 'knight'){ bob *= .8; tilt *= .3; } }
+  else { tilt = Math.sin(tm*1.8 + u.id)*.025; squash = 1 + Math.sin(tm*2.6 + u.id*1.3)*.02; }
+  if (u.working){ const p = u.workT/workDur(u); if (p > .62 && p < .92) tilt += u.face*.1; }
+  const sp = u.swing > 0 ? 1 - u.swing/(u.swMax || SW) : -1;
+  if (ty !== 'archer' && !GUN(ty) && sp > .3 && sp < .7) tilt += u.face*.13;
+  const sw = u.moving ? Math.sin(u.phase) : 0;
+
+  ctx.save(); ctx.translate(u.x, u.y);
+  if (u.sel){
+    ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.6;
+    const SR = ty === 'knight' ? 17 : R + 5; ctx.beginPath(); ctx.ellipse(0, 0, SR, SR*.5, 0, 0, 7); ctx.fill(); ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(25,45,15,.28)'; ctx.beginPath(); ctx.ellipse(0, 0, (ty === 'knight' ? 15 : R*1.05) - bob*.4, ty === 'knight' ? 6 : R*.46, 0, 0, 7); ctx.fill();
+  ctx.translate(0, -bob); ctx.rotate(tilt); ctx.scale(1, squash);
+  if (ty === 'knight'){ drawHorse(u, sw, T, hurt); ctx.translate(-2, -14); }
+
+  if (hurt) unitBodyVec(u, ty, T, R, H, true); else unitSprite('b', u, ty, T, R, H);
+  ctx.save(); ctx.scale(u.face, 1);
+  { const blink = ((tm + u.blink) % 4.2) < .13, flat = !!(u.working || u.swing > 0); if (hurt) unitHeadVec(u, ty, T, R, H, true, sw, blink, flat); else unitSprite('h', u, ty, T, R, H, blink, flat); }
   // hands, tools, shield
   const hy = -H*.36;
   const hf = { x: R + .8, y: hy + sw*1.3 }, ho = { x: -R - .8, y: hy - sw*1.3 };
@@ -3101,7 +3347,48 @@ function treeSpr(pine, v){
   o = { trunk, canopy, top: -th + 1 }; TREE_SPR.set(key, o); return o;
 }
 // units standing behind a tree make it see-through
-const TREE_OCC = [];
+// draw order for things that never move. Called inside the upright pass (x/y = screen, _wx/_wy = world).
+function staticOrder(all){
+  const n = all.length, box = new Array(n);
+  for (let i = 0; i < n; i++){
+    const [, k, o] = all[i];
+    let hw, hh, sx0, sx1, sy0, sy1;
+    if (k === 2){
+      hw = o.w/2; hh = o.h/2;
+      const A = ISO_ART[o.kind] ? isoArt(o.kind, o.team, isoVariant(o)) : null;
+      if (A){ sx0 = o.x - A.AX; sx1 = sx0 + A.w; sy0 = o.y - A.AY + (A.top || 0); sy1 = o.y - A.AY + A.h; }
+      else { const d = BDEF[o.kind], half = (o.w + o.h)*ISK*.5; sx0 = o.x - half - 4; sx1 = o.x + half + 4; sy0 = o.y - (d.wallH || 30) - (d.roofH || 20) - 40; sy1 = o.y + half*.5 + 6; }
+    } else { const r = k === 0 ? 10 : 18, sc = o.s || 1; hw = hh = r; sx0 = o.x - 30*sc; sx1 = o.x + 30*sc; sy0 = o.y - (k === 0 ? 62 : 34)*sc; sy1 = o.y + 10; }
+    box[i] = { x0: o._wx - hw, x1: o._wx + hw, y0: o._wy - hh, y1: o._wy + hh, sx0, sx1, sy0, sy1, d: o._wx + o._wy };
+  }
+  // neighbours through a coarse world grid
+  const G = 160, grid = new Map(), key = (a, b) => a*4096 + b;
+  for (let i = 0; i < n; i++){ const b = box[i]; for (let gx = Math.floor((b.x0 - 90)/G); gx <= Math.floor((b.x1 + 90)/G); gx++) for (let gy = Math.floor((b.y0 - 90)/G); gy <= Math.floor((b.y1 + 90)/G); gy++){ const k = key(gx, gy); let a = grid.get(k); if (!a){ a = []; grid.set(k, a); } a.push(i); } }
+  const out = Array.from({ length: n }, () => []), indeg = new Int32Array(n), seen = new Set();
+  for (const cell of grid.values()) for (let p = 0; p < cell.length; p++) for (let q = p + 1; q < cell.length; q++){
+    let i = cell[p], j = cell[q]; if (i > j){ const t = i; i = j; j = t; }
+    const pk = i*100000 + j; if (seen.has(pk)) continue; seen.add(pk);
+    const a = box[i], b = box[j];
+    if (a.sx1 <= b.sx0 || b.sx1 <= a.sx0 || a.sy1 <= b.sy0 || b.sy1 <= a.sy0) continue;      // not overlapping on screen
+    const aBehind = a.x1 <= b.x0 + 1 || a.y1 <= b.y0 + 1, bBehind = b.x1 <= a.x0 + 1 || b.y1 <= a.y0 + 1;
+    let first;
+    if (aBehind && !bBehind) first = i; else if (bBehind && !aBehind) first = j; else first = a.d <= b.d ? i : j;
+    const second = first === i ? j : i; out[first].push(second); indeg[second]++;
+  }
+  // Kahn, always taking the shallowest ready item (binary heap on depth)
+  const heap = [], less = (x, y) => box[x].d < box[y].d || (box[x].d === box[y].d && x < y);
+  const push = v => { heap.push(v); let c = heap.length - 1; while (c){ const p = (c - 1) >> 1; if (!less(heap[c], heap[p])) break; [heap[c], heap[p]] = [heap[p], heap[c]]; c = p; } };
+  const pop = () => { const top = heap[0], last = heap.pop(); if (heap.length){ heap[0] = last; let c = 0; for (;;){ const l = c*2 + 1, r = l + 1; let m = c; if (l < heap.length && less(heap[l], heap[m])) m = l; if (r < heap.length && less(heap[r], heap[m])) m = r; if (m === c) break; [heap[c], heap[m]] = [heap[m], heap[c]]; c = m; } } return top; };
+  for (let i = 0; i < n; i++) if (!indeg[i]) push(i);
+  const order = [], done = new Uint8Array(n);
+  while (order.length < n){
+    if (!heap.length){ let m = -1; for (let i = 0; i < n; i++) if (!done[i] && (m < 0 || box[i].d < box[m].d)) m = i; indeg[m] = 0; push(m); }   // break a rare cycle
+    const v = pop(); if (done[v]) continue; done[v] = 1; order.push(v);
+    for (const w of out[v]) if (!done[w] && --indeg[w] === 0) push(w);
+  }
+  const sorted = order.map(i => all[i]); all.length = 0; for (const it of sorted) all.push(it);
+}
+const TREE_OCC = [], STAT = { sig: '', S: null, list: [], idx: new Map() };
 function drawTree(t){
   const s = t.s, tm = S.time;
   const sway = Math.sin(tm*1.3 + t.seed*6)*1.1 + (t.shake > 0 ? Math.sin(tm*70)*t.shake*7 : 0);
@@ -3143,6 +3430,14 @@ function drawMine(m){
   }
   if (S.selRes === m && !S.spectate){ const nm = MINE_NAME[m.kind] + ' · ' + Math.ceil(m.amount); ctx.fillStyle = 'rgba(20,24,40,.72)'; rr(-34, -40, 68, 14, 7); ctx.fill(); ctx.fillStyle = '#f7f3e8'; ctx.font = '800 9px "Baloo 2", system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.fillText(nm, 0, -30); }
   ctx.restore();
+}
+// a small pit of sharpened stakes (view coordinates)
+function drawTrap(X, Y, f){
+  ctx.fillStyle = 'rgba(80,55,30,.45)'; ctx.beginPath(); ctx.ellipse(X, Y, 13, 6.5, 0, 0, 7); ctx.fill();
+  const n = Math.max(2, Math.round(7*f));
+  for (let i = 0; i < n; i++){ const a = i/7*Math.PI*2 + .4, x = X + Math.cos(a)*7, y = Y + Math.sin(a)*3.4, h = 7 + (i % 3)*1.5;
+    ctx.fillStyle = '#b27444'; ctx.beginPath(); ctx.moveTo(x - 1.6, y); ctx.lineTo(x, y - h); ctx.lineTo(x + 1.6, y); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = '#e2b27a'; ctx.beginPath(); ctx.moveTo(x - 1.6, y); ctx.lineTo(x, y - h); ctx.lineTo(x, y); ctx.closePath(); ctx.fill(); }
 }
 function drawFarm(f){
   const x = f.x - f.w/2, y = f.y - f.h/2;
@@ -3265,7 +3560,7 @@ function drawGhost(){
   rr(p.x - p.w/2, p.y - p.h/2, p.w, p.h, 6); if (p.kind !== 'farm') ctx.fill(); ctx.stroke(); ctx.setLineDash([]);
   if (SHOOT[p.kind]){ ctx.strokeStyle = 'rgba(255,255,255,.45)'; ctx.setLineDash([5, 5]); ctx.beginPath(); ctx.arc(p.x, p.y, SHOOT[p.kind].range, 0, 7); ctx.stroke(); ctx.setLineDash([]); }
   ctx.restore();
-  if (p.kind === 'farm') return;
+  if (p.kind === 'farm' || p.kind === 'trap') return;
   ctx.globalAlpha = .5; drawBuildingBody({ kind: p.kind, team: 0, x: ISOX(p.x, p.y), y: ISOY(p.x, p.y), w: p.w, h: p.h, hurt: 0 }); ctx.globalAlpha = 1;
 }
 function drawBuildingBody(b){
@@ -3382,8 +3677,8 @@ function drawRubble(r){
   ctx.fillStyle = TEAM[r.team].dark; ctx.globalAlpha = .6; ctx.fillRect(r.x - 14, r.y - 4, 26, 5); ctx.globalAlpha = 1;
 }
 function hpBar(x, y, w, f, col){
-  ctx.fillStyle = 'rgba(20,24,40,.7)'; rr(x - w/2 - 1, y - 1, w + 2, 5, 2.5); ctx.fill();
-  ctx.fillStyle = f > .5 ? col : f > .25 ? '#f5c542' : '#ff6b5e'; rr(x - w/2, y, Math.max(1, w*f), 3, 1.5); ctx.fill();
+  ctx.fillStyle = 'rgba(20,24,40,.7)'; ctx.fillRect(x - w/2 - 1, y - 1, w + 2, 5);
+  ctx.fillStyle = f > .5 ? col : f > .25 ? '#f5c542' : '#ff6b5e'; ctx.fillRect(x - w/2, y, Math.max(1, w*f), 3);
 }
 
 function render(){
@@ -3433,22 +3728,41 @@ function render(){
     ctx.fillStyle = TEAM[0].main; ctx.beginPath(); ctx.moveTo(r.x + 1, fy - 30); ctx.quadraticCurveTo(r.x + 9, fy - 31 + wv, r.x + 17, fy - 28); ctx.lineTo(r.x + 13, fy - 23.5); ctx.lineTo(r.x + 17, fy - 19); ctx.quadraticCurveTo(r.x + 9, fy - 21 + wv, r.x + 1, fy - 20); ctx.closePath(); ctx.fill(); }
   S.rallyDraw = null;
   for (const f of S.farms) if (visV(ISOX(f.x, f.y), ISOY(f.x, f.y))) drawFarmWheat(f);
-  // sorted layer
-  const items = [];
-  for (const t of S.trees) if (vis(t)) items.push([t.y, 0, t]);
-  for (const m of S.mines) if (vis(m)) items.push([m.y, 1, m]);
-  for (const b of S.buildings) if (!b.dead && vis(b) && (b.team === 0 || isSeen(b))) items.push([b.y, 2, b]);
-  TREE_OCC.length = 0;
-  for (const u of S.units) if (vis(u) && (u.team === 0 || isVis(u))){ items.push([u.y, 3, u]); TREE_OCC.push(u); }
+  for (const t of S.traps){ const X = ISOX(t.x, t.y), Y = ISOY(t.x, t.y); if (visV(X, Y) && (t.team === 0 || isVis(t))) drawTrap(X, Y, t.hp/t.max); }
+  // sorted layer: statics keep one cached order (so they never swap places), units are slotted between them
   const inFront = (b, p) => p._wx >= b._wx + b.w/2 - 2 || p._wy >= b._wy + b.h/2 - 2;
-  items.sort((A, B) => {
-    const a = A[2], b = B[2], ab = A[1] === 2, bb = B[1] === 2;
-    if (ab && !bb) return inFront(a, b) ? -1 : 1;
-    if (bb && !ab) return inFront(b, a) ? 1 : -1;
-    if (ab && bb){ if (a._wx + a.w/2 <= b._wx - b.w/2 + 1 || a._wy + a.h/2 <= b._wy - b.h/2 + 1) return -1; if (b._wx + b.w/2 <= a._wx - a.w/2 + 1 || b._wy + b.h/2 <= a._wy - a.h/2 + 1) return 1; }
-    return A[0] - B[0];
-  });
+  { let nd = 0; for (const b of S.buildings) if (b.dead) nd++;
+    const sig = S.trees.length + '|' + S.mines.length + '|' + S.buildings.length + '|' + nd;
+    if (STAT.sig !== sig || STAT.S !== S){
+      const all = [];
+      for (const t of S.trees) all.push([t.y, 0, t]);
+      for (const m of S.mines) all.push([m.y, 1, m]);
+      for (const b of S.buildings) if (!b.dead) all.push([b.y, 2, b]);
+      staticOrder(all);
+      STAT.list = all; STAT.idx = new Map(all.map((it, i) => [it[2], i])); STAT.sig = sig; STAT.S = S;
+    } }
+  const ulist = [];
+  TREE_OCC.length = 0;
+  for (const u of S.units) if (vis(u) && (u.team === 0 || isVis(u))){
+    TREE_OCC.push(u);
+    let slot = -1; const cx = Math.floor(u._wx/BKC), cy = Math.floor(u._wy/BKC);
+    for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++){ const cell = OBK.get(cellKey(cx + ox, cy + oy)); if (!cell) continue;
+      for (const o of cell){ const i = STAT.idx.get(o); if (i === undefined || i <= slot) continue; if (o.w ? inFront(o, u) : o.y <= u.y) slot = i; } }
+    ulist.push([slot, u.y, u]);
+  }
+  ulist.sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+  const items = []; let ui = 0;
+  for (let i = 0; i < STAT.list.length; i++){
+    const it = STAT.list[i], o = it[2];
+    while (ui < ulist.length && ulist[ui][0] < i) items.push([0, 3, ulist[ui++][2]]);
+    if (it[1] === 2 ? (!o.dead && vis(o) && (o.team === 0 || isSeen(o))) : vis(o)) items.push(it);
+  }
+  while (ui < ulist.length) items.push([0, 3, ulist[ui++][2]]);
   for (const [, k, o] of items){ if (k === 0) drawTree(o); else if (k === 1) drawMine(o); else if (k === 2) drawBuilding(o); else drawUnit(o); }
+  if (S.gallery){
+    ctx.font = '800 10px "Baloo 2", system-ui, sans-serif'; ctx.textAlign = 'center'; ctx.lineWidth = 3; ctx.lineJoin = 'round';
+    for (const u of S.units){ if (!u.gl || !vis(u)) continue; ctx.strokeStyle = 'rgba(20,24,40,.85)'; ctx.fillStyle = u.team ? (UDEF[u.type].mon ? '#e7c8ff' : '#ffc9c6') : '#ffffff'; ctx.strokeText(u.gl, u.x, u.y + 16); ctx.fillText(u.gl, u.x, u.y + 16); }
+  }
   if (S.place) drawGhost();
   // particles
   for (const p of S.particles){
@@ -3487,7 +3801,7 @@ function render(){
     }
     ctx.restore();
   }
-  if (FOG.on){ ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.globalCompositeOperation = 'multiply'; ctx.drawImage(FOG.cv, 0, 0, VIEW_W, VIEW_H); ctx.globalCompositeOperation = 'source-over'; }
+  if (FOG.on){ ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high'; ctx.globalCompositeOperation = 'multiply'; ctx.drawImage(FOG.cv, 0, 0, VIEW_W, VIEW_H); ctx.imageSmoothingQuality = 'low'; ctx.globalCompositeOperation = 'source-over'; }
   // overlays
   for (const b of S.buildings){ if (b.dead || !vis(b) || (b.team !== 0 && !isSeen(b))) continue;
     if (b.building && b.kind === 'wall') continue;
@@ -3797,7 +4111,7 @@ document.addEventListener('pointermove', e => { if (e.pointerType === 'mouse' ||
 const tipUp = e => { if (e.pointerType === 'mouse') return; clearTimeout(tipTimer); tipTimer = 0; if (tipBtn){ clearTimeout(tipHideT); tipHideT = setTimeout(hideTip, 1400); } };
 document.addEventListener('pointerup', tipUp, true); document.addEventListener('pointercancel', tipUp, true);
 document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest(TIPSEL)) e.preventDefault(); });
-const QG = ['food', 'wood', 'gold', 'stone', 'iron', 'lead'];
+const QG = ['food', 'wood', 'gold', 'stone', 'iron'];
 const QG_TIP = { food: 'nông dân làm ruộng cạnh nhà chính hoặc kho gần nhất, hết ruộng trống thì tự xây ruộng mới (' + COST.farm.wood + ' gỗ)', wood: 'nông dân tới chặt cây gần nhất, chia ra nhiều cây', gold: 'nông dân tới mỏ vàng gần nhất', stone: 'nông dân tới mỏ đá gần nhất', iron: 'nông dân tới mỏ sắt gần nhất', lead: 'nông dân tới mỏ chì gần nhất' };
 // nearest finished town centre / store of ours to where this farmer stands
 function farmDepot(u){ return nearestOf(S.buildings, u.x, u.y, b => b.team === 0 && !b.dead && !b.building && (b.kind === 'tc' || b.kind === 'store')); }
@@ -3885,6 +4199,16 @@ function missing(c){ const m = Object.entries(c).filter(([k, v]) => S.res[k] < v
 function startBuild(f, b){ if (f.team === 0) f.lastJob = { b, build: true }; f.noLeash = false; f.state = 'build'; f.target = b; f.res = null; f.resKind = null; f.tool = 'hammer'; f.workT = 0; f.working = false; f.stuck = 0; }
 function finishBuilding(b){
   b.building = false; b.prog = 1;
+  if (b.kind === 'wall' && !b.gate) for (const u of S.units){
+    if (u.dead || UDEF[u.type].fly || Math.abs(u.x - b.x) > b.w/2 + u.r || Math.abs(u.y - b.y) > b.h/2 + u.r) continue;
+    let best = null, bd = Infinity;
+    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1]]) for (const k of [1, 2, 3]){
+      const p = { x: b.x + dx*(b.w/2 + u.r + 2)*k, y: b.y + dy*(b.h/2 + u.r + 2)*k };
+      if (S.buildings.some(o => !o.dead && o !== b && !(o.gate && o.team === u.team) && Math.abs(p.x - o.x) < o.w/2 + u.r && Math.abs(p.y - o.y) < o.h/2 + u.r)) continue;
+      const d = Math.hypot(p.x - u.x, p.y - u.y); if (d < bd){ bd = d; best = p; } break;
+    }
+    if (best){ u.x = best.x; u.y = best.y; u.stuck = 0; u.wps = null; }
+  }
   puff(b.x, b.y, 'poof', 12, '#ffffff'); sfx('pop', b.x, b.y);
   if (b.team === 0 && b.kind !== 'wall' && !S.spectate) toast(BDEF[b.kind].name + ' đã xây xong!' + (b.kind === 'house' ? ' +10 chỗ ở' : ''));
 }
@@ -3928,6 +4252,7 @@ function validPlace(p){
   const hit = (o, m) => x0 < o.x + o.w/2 + m && x1 > o.x - o.w/2 - m && y0 < o.y + o.h/2 + m && y1 > o.y - o.h/2 - m;
   if (S.buildings.some(b => !b.dead && hit(b, p.kind === 'wall' || b.kind === 'wall' ? 0 : 18))) return false;
   if (S.farms.some(f => hit(f, 6))) return false;
+  if ((S.traps || []).some(f => hit(f, 2))) return false;
   for (const list of [S.trees, S.mines]) for (const o of list){
     const cx = clamp(o.x, x0, x1), cy = clamp(o.y, y0, y1);
     if (Math.hypot(o.x - cx, o.y - cy) < o.r + 6) return false;
@@ -3954,6 +4279,11 @@ function tryPlace(keep){
   if (!p.ok){ toast('Không xây được ở đây, chọn chỗ trống khác', true); return; }
   if (!canAfford(COST[p.kind])){ toast(missing(COST[p.kind]), true); S.place = null; return; }
   pay(COST[p.kind]);
+  if (p.kind === 'trap'){
+    S.traps.push({ x: p.x, y: p.y, w: 22, h: 22, hp: 100, max: 100, team: 0, t: 0 }); puff(p.x, p.y, 'poof', 6, '#b98a55'); sfx('build', p.x, p.y); marker(p.x, p.y, '#ffe07a');
+    p.count++; if (keep && canAfford(COST.trap)) p.ok = validPlace(p); else { S.place = null; dropFarmers(p.builders); }
+    return;
+  }
   if (p.kind === 'farm'){
     const tc = S.buildings.find(o => o.team === 0 && o.kind === 'tc' && !o.dead) || { team: 0 };
     const f = { kind: 'farm', x: p.x, y: p.y, w: 60, h: 42, amount: S.up[0].has('plow') ? 400 : 300, max: S.up[0].has('plow') ? 400 : 300, worker: null, slot: -1, tc };
@@ -4155,7 +4485,9 @@ $('#switch').addEventListener('click', openModes);
 $('#mode-btn').addEventListener('click', () => { closeMenu(); openModes(); });
 $('#modes-close').addEventListener('click', () => { $('#modes').hidden = true; });
 for (const b of document.querySelectorAll('[data-mode]')) b.addEventListener('click', () => { init(b.dataset.mode); if (b.dataset.mode === 'spec') toast('Đang xem 2 AI đấu nhau'); else if (b.dataset.mode === 'aimon') toast('Đang xem AI chống quái vật'); else if (b.dataset.mode === 'ai') toast('Bạn điều khiển quân Xanh'); });
-$('#spd-btn').addEventListener('click', () => { gameSpeed = gameSpeed >= 4 ? 1 : gameSpeed*2; $('#spd-val').textContent = gameSpeed + '×'; });
+const cycleSpeed = () => { gameSpeed = gameSpeed >= 4 ? 1 : gameSpeed + 1; $('#spd-val').textContent = gameSpeed + '×'; $('#spd-q').textContent = gameSpeed + '×'; };
+$('#spd-btn').addEventListener('click', cycleSpeed);
+$('#spd-q').addEventListener('click', cycleSpeed);
 function setArtStyle(st){
   ART_STYLE = st; try { localStorage.setItem('dcth-art', st); } catch (e) {}
   for (const k of [...ISO_CACHE.keys()]) if (k.startsWith('tc|')) ISO_CACHE.delete(k);
@@ -4588,6 +4920,7 @@ function iconURL(kind, isUnit){
       g.setTransform(sc, 0, 0, sc, 38, 70);
       drawUnit({ type: kind, team: 0, x: 0, y: 0, face: 1, phase: 0, moving: false, swing: 0, swMax: SW, hurt: 0, sel: false, carry: { amt: 0 }, tool: d.tool || 'shovel', id: 3, blink: 1, r: d.r || 8, working: false, state: 'idle', hp: 1, maxHp: 1 });
     } else if (kind === 'farm'){ g.setTransform(1, 0, 0, 1, 38, 40); drawFarm({ x: 0, y: 0, w: 60, h: 42, amount: 300, max: 300 }); }
+    else if (kind === 'trap'){ g.setTransform(2.2, 0, 0, 2.2, 38, 50); drawTrap(0, 0, 1); }
     else if (ISO_ART[kind] && isoArt(kind, 0, kind === 'tc' ? S.age[0] : mas ? 1 : 0)){
       const A = isoArt(kind, 0, kind === 'tc' ? S.age[0] : mas ? 1 : 0), hh = A.h - A.top, sc = Math.min(72/A.w, 70/hh);
       g.drawImage(A.cv, 0, A.top*2, A.cv.width, A.cv.height - A.top*2, 38 - A.w*sc/2, 73 - hh*sc, A.w*sc, hh*sc);
@@ -4639,11 +4972,11 @@ function buildPanel(){
     h += `<div class="actions">${actBtn('tc', 'tc', 'Nhà chính (H)')}${actBtn('idle', 'idle', 'Nông dân đang rảnh (.)')}</div>`;
   }
   if (S.spectate){
-    if (!sel.length && !b) h = '<div class="sel-head"><span class="sel-title">' + (S.monster ? 'AI đang chống quái' : 'Đang xem 2 AI đấu') + '</span></div><div class="spec"><div class="spec-row" id="sp-0"></div><div class="spec-row" id="sp-1"></div></div>';
+    if (!sel.length && !b) h = S.monster ? '' : '<div class="sel-head"><span class="sel-title">' + (S.monster ? 'AI đang chống quái' : 'Đang xem 2 AI đấu') + '</span></div><div class="spec"><div class="spec-row" id="sp-0"></div><div class="spec-row" id="sp-1"></div></div>';
     else h = h.replace(/<div class="actions">[\s\S]*?<\/div>/g, '');
   }
   el.innerHTML = h;
-  el.classList.toggle('bare', !S.spectate && !S.place && !sel.length && !b);
+  el.classList.toggle('bare', (!S.spectate || S.monster) && !S.place && !sel.length && !b);
   for (const x of el.querySelectorAll('[title]')){ x.dataset.tip = x.title; x.removeAttribute('title'); }
   if (tipBtn && !document.contains(tipBtn)) hideTip();
 }
@@ -4748,11 +5081,11 @@ const FPS = { n: 0, t0: 0, work: 0 };
 function frame(now){
   const dt = Math.min(.05, (now - last)/1000); last = now; const w0 = performance.now();
   for (let k = 0; k < gameSpeed; k++) update(dt);
-  if (S.spectate) autoCam(dt);
+  if (S.spectate && !S.monster) autoCam(dt);
   render();
   FOG.t -= dt; if (FOG.t <= 0){ FOG.t = .2; fogUpdate(); }
   fogPaint();
-  hudT -= dt; if (hudT <= 0){ hudT = .15; refreshPanel(); syncTbar(); cv.style.cursor = S.amove || S.gmode || S.rallyB ? 'crosshair' : ''; fitTopmid(); }
+  hudT -= dt; if (hudT <= 0){ hudT = .15; { const w = !!S.spectate; if ($('#spd-q').hidden === w) $('#spd-q').hidden = !w; document.body.classList.toggle('watch', w); if ($('#spd-q').textContent !== gameSpeed + '×') $('#spd-q').textContent = gameSpeed + '×'; } refreshPanel(); syncTbar(); cv.style.cursor = S.amove || S.gmode || S.rallyB ? 'crosshair' : ''; fitTopmid(); }
   miniT -= dt; if (miniT <= 0){ miniT = .2; renderMini(); }
   FPS.n++; FPS.work += performance.now() - w0;
   if (!FPS.t0) FPS.t0 = now;
